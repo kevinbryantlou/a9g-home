@@ -485,17 +485,28 @@ public class HomeActivity extends Activity {
         }
     }
 
-    /** Hand the HOME role back to the stock launcher. Shared with All apps. */
+    /**
+     * Hand HOME back to Google's launcher. Shared with All apps and the long-press on Menu.
+     * If the launcher is disabled (the normal state, since its system priority otherwise
+     * always wins HOME), this app cannot re-enable it; it opens the launcher's app-info
+     * page so the user can press Enable, after which HOME goes back to it on its own.
+     */
     static void confirmRestoreStockHome(final Activity a) {
+        final boolean enabled = Sources.stockHomeEnabled(a);
         new AlertDialog.Builder(a, android.R.style.Theme_DeviceDefault_Dialog_Alert)
-                .setTitle("Use the stock home screen?")
-                .setMessage("Google's home screen becomes the default again. This app stays installed; "
-                        + "open it from the stock app list to switch back.")
-                .setPositiveButton("Restore", (d, w) -> {
-                    a.getPackageManager().clearPackagePreferredActivities(a.getPackageName());
-                    Sources.start(a, new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME)
-                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                    a.finish();
+                .setTitle("Use Google's home screen?")
+                .setMessage(enabled
+                        ? "Google's home screen becomes the default again. This app stays installed."
+                        : "Google's home screen is switched off. On the next screen choose Enable, "
+                        + "then press Home. This app stays installed.")
+                .setPositiveButton(enabled ? "Restore" : "Continue", (d, w) -> {
+                    if (enabled) {
+                        a.getPackageManager().clearPackagePreferredActivities(a.getPackageName());
+                        Sources.start(a, new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME)
+                                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                    } else {
+                        Sources.start(a, Sources.stockHomeAppInfoIntent());
+                    }
                 })
                 .setNegativeButton("Cancel", null)
                 .show();

@@ -77,6 +77,23 @@ final class Sources {
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     }
 
+    /** True when Google's launcher is installed and not disabled. */
+    static boolean stockHomeEnabled(Context c) {
+        try {
+            return c.getPackageManager().getApplicationInfo(STOCK_HOME.getPackageName(),
+                    PackageManager.MATCH_DISABLED_COMPONENTS).enabled;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
+    }
+
+    /** Settings' app-info page for Google's launcher, where Enable lives. */
+    static Intent stockHomeAppInfoIntent() {
+        return new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                android.net.Uri.fromParts("package", STOCK_HOME.getPackageName(), null))
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    }
+
     static Intent intentFor(Context c, Source s) {
         return s.isInput() ? ps4Intent() : appIntent(c, s.pkg);
     }

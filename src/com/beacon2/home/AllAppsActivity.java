@@ -92,7 +92,9 @@ public class AllAppsActivity extends Activity {
         entries.add(new Entry("PS4", null, Sources.ps4Intent(), 0));
         entries.add(new Entry("Settings", "com.android.tv.settings", Sources.settingsIntent(), 0));
         Collections.sort(entries, (a, b) -> a.label.compareToIgnoreCase(b.label));
-        entries.add(new Entry("Stock home", null, Sources.stockHomeIntent(), 1));
+        if (Sources.stockHomeEnabled(this)) {
+            entries.add(new Entry("Stock home", null, Sources.stockHomeIntent(), 1));
+        }
         entries.add(new Entry("Restore stock home", null, null, 2));
     }
 
@@ -188,7 +190,7 @@ public class AllAppsActivity extends Activity {
         banner.setImageBitmap(e.banner);
         banner.setBackgroundColor(e.banner == null ? (e.pkg == null && e.kind == 0 ? 0xFF003791 : 0xFF2A2A2A) : 0);
         hint.setText(e.kind == 1 ? "Opens Google's home screen without changing the default."
-                : e.kind == 2 ? "Makes Google's home screen the default again." : "");
+                : e.kind == 2 ? "Switch back to Google's home screen." : "");
     }
 
     private void loadBannersAsync() {
