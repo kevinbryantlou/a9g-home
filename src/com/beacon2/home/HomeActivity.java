@@ -11,7 +11,6 @@ import android.graphics.Bitmap;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Outline;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -154,13 +153,6 @@ public class HomeActivity extends Activity {
 
         tint = new View(this);
         root.addView(tint, match());
-
-        // Extra dimming behind the names only: solid for the first 22% of the width,
-        // fading out by 44%, so the rest of the photo stays bright.
-        View left = new View(this);
-        left.setBackground(new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT,
-                new int[]{0x66000000, 0x66000000, 0x00000000}));
-        root.addView(left, new FrameLayout.LayoutParams(px(845), ViewGroup.LayoutParams.MATCH_PARENT, Gravity.START));
 
         credit = Ui.text(this, 20, 500, 0xFFFFFFFF);
         credit.setAlpha(0.5f);
@@ -318,8 +310,8 @@ public class HomeActivity extends Activity {
 
     /** The only layer between photo and menu: a neutral shade. */
     private void applyShade() {
-        // One shade, one number: 40% by day, 60% at night.
-        int alpha = slideshow == null ? 0xFF : (night ? 0x99 : 0x66);
+        // One shade, one number: 30% by day, 60% at night.
+        int alpha = slideshow == null ? 0xFF : (night ? 0x99 : 0x4D);
         tint.setBackgroundColor((alpha << 24) | 0x0A0A0A);
     }
 
