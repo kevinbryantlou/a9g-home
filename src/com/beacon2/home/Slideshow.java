@@ -41,12 +41,20 @@ final class Slideshow {
         Photo(String file, String credit) { this.file = file; this.credit = credit; }
     }
 
-    Slideshow(Context context, ImageView a, ImageView b, TextView credit) {
+    Slideshow(Context context, ImageView a, ImageView b, TextView credit, String first) {
         this.context = context;
         this.layers = new ImageView[]{a, b};
         this.credit = credit;
         loadIndex();
         Collections.shuffle(photos);
+        if (first != null) {
+            for (int i = 0; i < photos.size(); i++) {
+                if (photos.get(i).file.equals("photos/" + first)) {
+                    photos.add(0, photos.remove(i));
+                    break;
+                }
+            }
+        }
     }
 
     /** assets/photos/photos.json: [{"file":"x.jpg","credit":"Name, CC BY-SA 4.0"}, ...] */

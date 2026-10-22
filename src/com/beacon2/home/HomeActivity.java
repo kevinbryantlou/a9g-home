@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Outline;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -154,6 +155,13 @@ public class HomeActivity extends Activity {
         tint = new View(this);
         root.addView(tint, match());
 
+        // Extra dimming behind the names only: solid for the first 22% of the width,
+        // fading out by 44%, so the rest of the photo stays bright.
+        View left = new View(this);
+        left.setBackground(new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT,
+                new int[]{0x66000000, 0x66000000, 0x00000000}));
+        root.addView(left, new FrameLayout.LayoutParams(px(845), ViewGroup.LayoutParams.MATCH_PARENT, Gravity.START));
+
         credit = Ui.text(this, 20, 500, 0xFFFFFFFF);
         credit.setAlpha(0.5f);
         FrameLayout.LayoutParams cp = wrap(Gravity.BOTTOM | Gravity.END);
@@ -226,7 +234,8 @@ public class HomeActivity extends Activity {
         barp.topMargin = px(950);
         content.addView(bar, barp);
 
-        slideshow = new Slideshow(this, a, b, credit);
+        // Optional start photo, e.g. `am start -n com.beacon2.home/.HomeActivity --es photo big_sur.jpg`.
+        slideshow = new Slideshow(this, a, b, credit, getIntent().getStringExtra("photo"));
         if (slideshow.isEmpty()) {
             slideshow = null;
             credit.setVisibility(View.GONE);
