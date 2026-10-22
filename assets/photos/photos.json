@@ -1,7 +1,7 @@
 [
  {
   "file": "golden_gate.jpg",
-  "credit": "Golden Gate Bridge, San Francisco. Photo: Dietmar Rabich, CC BY-SA 4.0",
+  "credit": "Golden Gate Bridge, San Francisco. Photo: Dietmar Rabich, CC BY-SA 4.0, cropped",
   "place": "Golden Gate Bridge, San Francisco",
   "artist": "Dietmar Rabich",
   "license": "CC BY-SA 4.0",
@@ -9,7 +9,7 @@
  },
  {
   "file": "grand_canyon.jpg",
-  "credit": "Grand Canyon, Arizona. Photo: Tuxyso, CC BY-SA 3.0",
+  "credit": "Grand Canyon, Arizona. Photo: Tuxyso, CC BY-SA 3.0, cropped",
   "place": "Grand Canyon, Arizona",
   "artist": "Tuxyso",
   "license": "CC BY-SA 3.0",
@@ -17,7 +17,7 @@
  },
  {
   "file": "yosemite.jpg",
-  "credit": "Yosemite Valley, California. Photo: Diliff, CC BY-SA 3.0",
+  "credit": "Yosemite Valley, California. Photo: Diliff, CC BY-SA 3.0, cropped",
   "place": "Yosemite Valley, California",
   "artist": "Diliff",
   "license": "CC BY-SA 3.0",
@@ -25,7 +25,7 @@
  },
  {
   "file": "zion.jpg",
-  "credit": "Zion Canyon, Utah. Photo: Óðinn, CC BY-SA 2.5 ca",
+  "credit": "Zion Canyon, Utah. Photo: Óðinn, CC BY-SA 2.5 ca, cropped",
   "place": "Zion Canyon, Utah",
   "artist": "Óðinn",
   "license": "CC BY-SA 2.5 ca",
@@ -33,7 +33,7 @@
  },
  {
   "file": "arches.jpg",
-  "credit": "Delicate Arch, Utah. Photo: Ymaup, CC BY-SA 3.0",
+  "credit": "Delicate Arch, Utah. Photo: Ymaup, CC BY-SA 3.0, cropped",
   "place": "Delicate Arch, Utah",
   "artist": "Ymaup",
   "license": "CC BY-SA 3.0",
@@ -41,7 +41,7 @@
  },
  {
   "file": "monument_valley.jpg",
-  "credit": "Monument Valley, Arizona. Photo: Christian Mehlführer, User:Chmehl, CC BY 2.5",
+  "credit": "Monument Valley, Arizona. Photo: Christian Mehlführer, User:Chmehl, CC BY 2.5, cropped",
   "place": "Monument Valley, Arizona",
   "artist": "Christian Mehlführer, User:Chmehl",
   "license": "CC BY 2.5",
@@ -49,7 +49,7 @@
  },
  {
   "file": "antelope.jpg",
-  "credit": "Antelope Canyon, Arizona. Photo: King of Hearts, CC BY-SA 4.0",
+  "credit": "Antelope Canyon, Arizona. Photo: King of Hearts, CC BY-SA 4.0, cropped",
   "place": "Antelope Canyon, Arizona",
   "artist": "King of Hearts",
   "license": "CC BY-SA 4.0",
@@ -57,7 +57,7 @@
  },
  {
   "file": "yellowstone.jpg",
-  "credit": "Grand Prismatic Spring, Yellowstone. Photo: Clément Bardot, CC BY-SA 3.0",
+  "credit": "Grand Prismatic Spring, Yellowstone. Photo: Clément Bardot, CC BY-SA 3.0, cropped",
   "place": "Grand Prismatic Spring, Yellowstone",
   "artist": "Clément Bardot",
   "license": "CC BY-SA 3.0",
@@ -65,7 +65,7 @@
  },
  {
   "file": "teton.jpg",
-  "credit": "Teton Range, Wyoming. Photo: DXR, CC BY-SA 4.0",
+  "credit": "Teton Range, Wyoming. Photo: DXR, CC BY-SA 4.0, cropped",
   "place": "Teton Range, Wyoming",
   "artist": "DXR",
   "license": "CC BY-SA 4.0",
@@ -73,7 +73,7 @@
  },
  {
   "file": "big_sur.jpg",
-  "credit": "McWay Falls, Big Sur. Photo: King of Hearts, CC BY-SA 3.0",
+  "credit": "McWay Falls, Big Sur. Photo: King of Hearts, CC BY-SA 3.0, cropped",
   "place": "McWay Falls, Big Sur",
   "artist": "King of Hearts",
   "license": "CC BY-SA 3.0",
@@ -81,7 +81,7 @@
  },
  {
   "file": "moraine.jpg",
-  "credit": "Moraine Lake, Banff. Photo: Chensiyuan, CC BY-SA 4.0",
+  "credit": "Moraine Lake, Banff. Photo: Chensiyuan, CC BY-SA 4.0, cropped",
   "place": "Moraine Lake, Banff",
   "artist": "Chensiyuan",
   "license": "CC BY-SA 4.0",
@@ -89,7 +89,7 @@
  },
  {
   "file": "iceland.jpg",
-  "credit": "Kirkjufell, Iceland. Photo: Jakub Hałun, CC BY 4.0",
+  "credit": "Kirkjufell, Iceland. Photo: Jakub Hałun, CC BY 4.0, cropped",
   "place": "Kirkjufell, Iceland",
   "artist": "Jakub Hałun",
   "license": "CC BY 4.0",
@@ -105,7 +105,7 @@
  },
  {
   "file": "fjord.jpg",
-  "credit": "Geirangerfjord, Norway. Photo: Ximonic (Simo Räsänen), CC BY-SA 3.0",
+  "credit": "Geirangerfjord, Norway. Photo: Ximonic (Simo Räsänen), CC BY-SA 3.0, cropped",
   "place": "Geirangerfjord, Norway",
   "artist": "Ximonic (Simo Räsänen)",
   "license": "CC BY-SA 3.0",
@@ -113,7 +113,7 @@
  },
  {
   "file": "machu.jpg",
-  "credit": "Machu Picchu, Peru. Photo: Diego Delso, CC BY-SA 4.0",
+  "credit": "Machu Picchu, Peru. Photo: Diego Delso, CC BY-SA 4.0, cropped",
   "place": "Machu Picchu, Peru",
   "artist": "Diego Delso",
   "license": "CC BY-SA 4.0",
@@ -129,7 +129,7 @@
  },
  {
   "file": "patagonia.jpg",
-  "credit": "Torres del Paine, Chile. Photo: Diego Delso, CC BY-SA 3.0",
+  "credit": "Torres del Paine, Chile. Photo: Diego Delso, CC BY-SA 3.0, cropped",
   "place": "Torres del Paine, Chile",
   "artist": "Diego Delso",
   "license": "CC BY-SA 3.0",
@@ -137,7 +137,7 @@
  },
  {
   "file": "milford.jpg",
-  "credit": "Milford Sound, New Zealand. Photo: Krzysztof Golik, CC BY-SA 4.0",
+  "credit": "Milford Sound, New Zealand. Photo: Krzysztof Golik, CC BY-SA 4.0, cropped",
   "place": "Milford Sound, New Zealand",
   "artist": "Krzysztof Golik",
   "license": "CC BY-SA 4.0",
@@ -145,7 +145,7 @@
  },
  {
   "file": "dolomites.jpg",
-  "credit": "Tre Cime di Lavaredo, Dolomites. Photo: Ximonic (Simo Räsänen), CC BY-SA 4.0",
+  "credit": "Tre Cime di Lavaredo, Dolomites. Photo: Ximonic (Simo Räsänen), CC BY-SA 4.0, cropped",
   "place": "Tre Cime di Lavaredo, Dolomites",
   "artist": "Ximonic (Simo Räsänen)",
   "license": "CC BY-SA 4.0",
@@ -153,7 +153,7 @@
  },
  {
   "file": "death_valley.jpg",
-  "credit": "Zabriskie Point, Death Valley. Photo: King of Hearts, CC BY-SA 3.0",
+  "credit": "Zabriskie Point, Death Valley. Photo: King of Hearts, CC BY-SA 3.0, cropped",
   "place": "Zabriskie Point, Death Valley",
   "artist": "King of Hearts",
   "license": "CC BY-SA 3.0",

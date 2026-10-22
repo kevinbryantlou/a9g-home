@@ -3,7 +3,9 @@
 A home screen app for one TV: Kevin's Sony XBR-55A9G (Android TV 10). Plain Java, no libraries, built without Gradle.
 
 - **Home**: the service names are the menu (YouTube, Prime Video, Netflix, PS4 on HDMI 2, Spotify), over a photo slideshow behind a single neutral shade. Inputs opens Sony's input picker; All apps lists every TV app.
-- **Ways back to Google's home screen**: All apps → Restore stock home; long-press Menu; uninstall; or `adb shell cmd package set-home-activity com.google.android.tvlauncher`. A crash also hands HOME back automatically.
+- **Default home**: Google's launcher (`com.google.android.tvlauncher`) is *disabled*. It is a system app whose HOME filter has priority 2, which always beats an installed app's 0, so disabling it is the only way for this app to be what the Home button opens.
+- **Ways back to Google's home screen**: All apps → Restore stock home (or long-press Menu) opens Google launcher's app-info page; choose **Enable**, then press Home. Over ADB: `adb shell pm enable com.google.android.tvlauncher`. To uninstall this app, enable Google's launcher *first*, or the TV is left with only the boot placeholder.
+- **If the home screen fails to build** it shows a plain fallback with Settings, "Use Google's home screen" and "Try again", rather than crashing (a crash with Google's launcher disabled would just relaunch it).
 
 ## Build and install
 

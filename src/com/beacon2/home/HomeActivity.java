@@ -42,7 +42,7 @@ import java.util.Date;
 public class HomeActivity extends Activity {
     private static final int ROWS = Sources.HOME.length;
     private static final String[] BUTTONS = {"Inputs", "All apps", "Settings"};
-    private static final long MOVE_MS = 180, TINT_MS = 240, BANNER_MS = 160;
+    private static final long MOVE_MS = 180, BANNER_MS = 160;
     private static final long IDLE_MS = 45_000, SHIFT_MS = 60_000;
     private static final float UNFOCUSED_SCALE = 0.64f;
 
@@ -62,6 +62,8 @@ public class HomeActivity extends Activity {
     /** 0..ROWS-1 are rows, ROWS.. are buttons. */
     private int focus = 0, lastRow = 0, lastButton = 0, launchedRow = -1;
     private boolean idle, resumed, night, consumeKeyUp;
+    /** Set if the normal screen failed to build; a plain fallback screen is shown instead. */
+    private boolean safeMode;
     private int shiftStep;
 
     // ---- lifecycle -------------------------------------------------------
@@ -70,14 +72,52 @@ public class HomeActivity extends Activity {
     protected void onCreate(Bundle state) {
         super.onCreate(state);
         night = isNight();
-        setContentView(build());
-        applyNight();
-        applyFocus(0, false);
+        try {
+            setContentView(build());
+            applyNight();
+            applyFocus(0, false);
+        } catch (RuntimeException | OutOfMemoryError e) {
+            // With Google's launcher disabled, a crash here would relaunch this activity
+            // in a loop. Show a plain screen that still reaches Settings and the way back.
+            android.util.Log.e(Sources.TAG, "home failed to build; safe mode", e);
+            safeMode = true;
+            if (slideshow != null) slideshow.release();
+            slideshow = null;
+            setContentView(safeView());
+        }
+    }
+
+    private View safeView() {
+        LinearLayout box = new LinearLayout(this);
+        box.setOrientation(LinearLayout.VERTICAL);
+        box.setGravity(Gravity.CENTER);
+        box.setBackgroundColor(0xFF121212);
+        TextView msg = new TextView(this);
+        msg.setText("The home screen hit a problem.");
+        msg.setTextColor(0xFFFFFFFF);
+        msg.setTextSize(28);
+        box.addView(msg);
+        String[] labels = {"Settings", "Use Google's home screen", "Try again"};
+        for (int i = 0; i < labels.length; i++) {
+            final int which = i;
+            android.widget.Button b = new android.widget.Button(this);
+            b.setText(labels[i]);
+            b.setOnClickListener(v -> {
+                if (which == 0) Sources.start(this, Sources.settingsIntent());
+                else if (which == 1) confirmRestoreStockHome(this);
+                else recreate();
+            });
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(px(640), ViewGroup.LayoutParams.WRAP_CONTENT);
+            lp.topMargin = px(24);
+            box.addView(b, lp);
+        }
+        return box;
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        if (safeMode) return;
         IntentFilter f = new IntentFilter();
         f.addAction(Intent.ACTION_TIME_TICK);
         f.addAction(Intent.ACTION_TIME_CHANGED);
@@ -94,7 +134,7 @@ public class HomeActivity extends Activity {
     protected void onResume() {
         super.onResume();
         resumed = true;
-        wake(false);
+        if (!safeMode) wake(false);
     }
 
     @Override
@@ -127,6 +167,7 @@ public class HomeActivity extends Activity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        if (safeMode) return;
         if (resumed) {
             wake(false);
             applyFocus(0, true);
@@ -357,7 +398,12 @@ public class HomeActivity extends Activity {
             final Bitmap[] loaded = new Bitmap[ROWS];
             for (int i = 0; i < ROWS; i++) {
                 Sources.Source s = Sources.HOME[i];
-                loaded[i] = s.isInput() ? ps4Banner(w, h) : Sources.banner(app, s.pkg, w, h);
+                try {
+                    loaded[i] = s.isInput() ? ps4Banner(w, h) : Sources.banner(app, s.pkg, w, h);
+                } catch (RuntimeException | OutOfMemoryError e) {
+                    loaded[i] = null; // drawn as a text tile instead
+                }
+                if (loaded[i] == null) loaded[i] = textBanner(s.name, w, h);
             }
             handler.post(() -> {
                 if (isDestroyed()) return;
@@ -370,16 +416,29 @@ public class HomeActivity extends Activity {
 
     /** The PS4 has no app banner; draw one: PlayStation blue with "PS4". */
     private Bitmap ps4Banner(int w, int h) {
+        return labelBanner("PS4", 0xFF003791, 96, w, h);
+    }
+
+    /** Fallback for an app whose banner is missing: its name on a dark tile. */
+    private Bitmap textBanner(String name, int w, int h) {
+        try {
+            return labelBanner(name, 0xFF2A2A2A, 56, w, h);
+        } catch (RuntimeException | OutOfMemoryError e) {
+            return null;
+        }
+    }
+
+    private Bitmap labelBanner(String label, int bg, int textSize, int w, int h) {
         Bitmap b = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         android.graphics.Canvas c = new android.graphics.Canvas(b);
-        c.drawColor(0xFF003791);
+        c.drawColor(bg);
         android.graphics.Paint p = new android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG);
         p.setColor(0xFFFFFFFF);
         p.setTypeface(Ui.font(this, 700));
-        p.setTextSize(px(96));
+        p.setTextSize(px(textSize));
         p.setTextAlign(android.graphics.Paint.Align.CENTER);
         android.graphics.Paint.FontMetrics fm = p.getFontMetrics();
-        c.drawText("PS4", w / 2f, h / 2f - (fm.ascent + fm.descent) / 2f, p);
+        c.drawText(label, w / 2f, h / 2f - (fm.ascent + fm.descent) / 2f, p);
         return b;
     }
 
@@ -387,6 +446,7 @@ public class HomeActivity extends Activity {
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent e) {
+        if (safeMode) return super.dispatchKeyEvent(e);
         int code = e.getKeyCode();
         boolean ours = isNavKey(code);
 
@@ -526,6 +586,7 @@ public class HomeActivity extends Activity {
             idle = true;
             if (slideshow != null) {
                 content.animate().alpha(0f).setDuration(1500).start();
+                leftShade.animate().alpha(0f).setDuration(1500).start();
                 tint.animate().alpha(0.35f).setDuration(1500).start();
                 credit.animate().alpha(0.7f).setDuration(1500).start();
             } else {
@@ -538,9 +599,11 @@ public class HomeActivity extends Activity {
         idle = false;
         long d = animate ? 150 : 0;
         content.animate().cancel();
+        leftShade.animate().cancel();
         tint.animate().cancel();
         credit.animate().cancel();
         content.animate().alpha(1f).setDuration(d).start();
+        leftShade.animate().alpha(1f).setDuration(d).start();
         tint.animate().alpha(1f).setDuration(d).start();
         credit.animate().alpha(0.5f).setDuration(d).start();
         scheduleIdle();
@@ -591,6 +654,7 @@ public class HomeActivity extends Activity {
         for (TextView t : rows) t.setTextColor(c);
         clock.setTextColor(c);
         date.setTextColor(c);
+        credit.setTextColor(c);
         clock.setAlpha(night ? 0.45f : 0.7f);
         applyBannerNight();
     }

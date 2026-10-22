@@ -78,6 +78,19 @@ public class AllAppsActivity extends Activity {
     }
 
     private void collect() {
+        try {
+            collectApps();
+        } catch (RuntimeException e) {
+            android.util.Log.w(Sources.TAG, "app list failed", e);
+        }
+        Collections.sort(entries, (a, b) -> a.label.compareToIgnoreCase(b.label));
+        if (Sources.stockHomeEnabled(this)) {
+            entries.add(new Entry("Stock home", null, Sources.stockHomeIntent(), 1));
+        }
+        entries.add(new Entry("Restore stock home", null, null, 2));
+    }
+
+    private void collectApps() {
         PackageManager pm = getPackageManager();
         Intent q = new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LEANBACK_LAUNCHER);
         List<ResolveInfo> found = pm.queryIntentActivities(q, 0);
@@ -91,11 +104,6 @@ public class AllAppsActivity extends Activity {
         }
         entries.add(new Entry("PS4", null, Sources.ps4Intent(), 0));
         entries.add(new Entry("Settings", "com.android.tv.settings", Sources.settingsIntent(), 0));
-        Collections.sort(entries, (a, b) -> a.label.compareToIgnoreCase(b.label));
-        if (Sources.stockHomeEnabled(this)) {
-            entries.add(new Entry("Stock home", null, Sources.stockHomeIntent(), 1));
-        }
-        entries.add(new Entry("Restore stock home", null, null, 2));
     }
 
     private View build() {
@@ -199,10 +207,15 @@ public class AllAppsActivity extends Activity {
             for (int i = 0; i < entries.size() && alive; i++) {
                 final Entry e = entries.get(i);
                 if (e.pkg == null) continue;
-                Bitmap b = Sources.banner(getApplicationContext(), e.pkg, w, h);
-                if (b == null) {
-                    Bitmap ic = Sources.icon(getApplicationContext(), e.pkg, h);
-                    b = ic == null ? null : centered(ic, w, h);
+                Bitmap b;
+                try {
+                    b = Sources.banner(getApplicationContext(), e.pkg, w, h);
+                    if (b == null) {
+                        Bitmap ic = Sources.icon(getApplicationContext(), e.pkg, h);
+                        b = ic == null ? null : centered(ic, w, h);
+                    }
+                } catch (RuntimeException | OutOfMemoryError err) {
+                    b = null; // the focused row's name is already on screen in large type
                 }
                 final Bitmap fb = b;
                 handler.post(() -> {
