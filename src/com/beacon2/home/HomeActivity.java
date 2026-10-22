@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Outline;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -49,7 +50,7 @@ public class HomeActivity extends Activity {
     private final DecelerateInterpolator decel = new DecelerateInterpolator(1.5f);
 
     private FrameLayout content;
-    private View tint;
+    private View tint, leftShade;
     private TextView[] rows = new TextView[ROWS];
     private TextView[] buttons = new TextView[BUTTONS.length];
     private ImageView[] bannerLayers = new ImageView[2];
@@ -68,7 +69,7 @@ public class HomeActivity extends Activity {
     @Override
     protected void onCreate(Bundle state) {
         super.onCreate(state);
-        night = Ui.isNight();
+        night = isNight();
         setContentView(build());
         applyNight();
         applyFocus(0, false);
@@ -153,6 +154,11 @@ public class HomeActivity extends Activity {
 
         tint = new View(this);
         root.addView(tint, match());
+
+        // Extra dimming behind the names only: solid for the first 22% of the width,
+        // fading out by 44%, so the rest of the photo stays bright. Set in applyShade().
+        leftShade = new View(this);
+        root.addView(leftShade, new FrameLayout.LayoutParams(px(845), ViewGroup.LayoutParams.MATCH_PARENT, Gravity.START));
 
         credit = Ui.text(this, 20, 500, 0xFFFFFFFF);
         credit.setAlpha(0.5f);
@@ -310,9 +316,14 @@ public class HomeActivity extends Activity {
 
     /** The only layer between photo and menu: a neutral shade. */
     private void applyShade() {
-        // One shade, one number: 30% by day, 60% at night.
-        int alpha = slideshow == null ? 0xFF : (night ? 0x99 : 0x4D);
+        // Day: 30% everywhere plus 40% behind the names. Night scales both by 1.5x.
+        float scale = night ? 1.5f : 1f;
+        int alpha = slideshow == null ? 0xFF : Math.round(0.30f * scale * 255);
         tint.setBackgroundColor((alpha << 24) | 0x0A0A0A);
+        int left = Math.round(0.40f * scale * 255) << 24;
+        leftShade.setBackground(new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT,
+                new int[]{left, left, 0}));
+        leftShade.setVisibility(slideshow == null ? View.GONE : View.VISIBLE);
     }
 
     private void showBanner(int row, boolean animate) {
@@ -537,7 +548,7 @@ public class HomeActivity extends Activity {
     private final BroadcastReceiver timeReceiver = new BroadcastReceiver() {
         @Override public void onReceive(Context c, Intent i) {
             updateClock();
-            boolean n = Ui.isNight();
+            boolean n = isNight();
             if (n != night) {
                 night = n;
                 applyNight();
@@ -551,6 +562,12 @@ public class HomeActivity extends Activity {
         String pattern = DateFormat.is24HourFormat(this) ? "H:mm" : "h:mm";
         clock.setText(DateFormat.format(pattern, now));
         date.setText(DateFormat.format("EEEE d MMMM", now));
+    }
+
+    /** The clock decides, unless launched with `--ez night true|false` for testing. */
+    private boolean isNight() {
+        Intent i = getIntent();
+        return i != null && i.hasExtra("night") ? i.getBooleanExtra("night", false) : Ui.isNight();
     }
 
     private int textColor() {

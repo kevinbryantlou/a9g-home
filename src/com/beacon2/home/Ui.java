@@ -55,10 +55,10 @@ final class Ui {
         return d;
     }
 
-    /** 21:00 to 06:30 by the local clock; there is no light sensor. */
+    /** 20:00 to 06:30 by the local clock; there is no light sensor. */
     static boolean isNight() {
         Calendar now = Calendar.getInstance();
         int minutes = now.get(Calendar.HOUR_OF_DAY) * 60 + now.get(Calendar.MINUTE);
-        return minutes >= 21 * 60 || minutes < 6 * 60 + 30;
+        return minutes >= 20 * 60 || minutes < 6 * 60 + 30;
     }
 }
