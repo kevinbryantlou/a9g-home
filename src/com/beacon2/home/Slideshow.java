@@ -35,6 +35,8 @@ final class Slideshow {
     private Handler workerHandler;
     private int front = 0, next = 0;
     private boolean running;
+    /** Bumped by stop(); a decode that finishes after a stop/start is dropped. */
+    private int generation;
 
     static final class Photo {
         final String file, credit;
@@ -94,6 +96,7 @@ final class Slideshow {
 
     void stop() {
         running = false;
+        generation++;
         main.removeCallbacks(advance);
         if (worker != null) {
             worker.quitSafely();
@@ -119,10 +122,11 @@ final class Slideshow {
         next = (index + 1) % photos.size();
         final Handler wh = workerHandler;
         if (wh == null) return;
+        final int gen = generation;
         wh.post(() -> {
             final Bitmap bmp = Sources.decodeAssetPhoto(context, p.file, 1920, 1080);
             main.post(() -> {
-                if (!running) return;
+                if (!running || gen != generation) return;
                 if (bmp != null) present(bmp, p.credit, fade);
                 main.postDelayed(advance, INTERVAL_MS);
             });
@@ -137,7 +141,10 @@ final class Slideshow {
         credit.setText(creditText);
         if (fade) {
             in.setAlpha(0f);
-            in.animate().alpha(1f).setDuration(FADE_MS).withEndAction(() -> out.setImageDrawable(null)).start();
+            in.animate().alpha(1f).setDuration(FADE_MS).withEndAction(() -> {
+                // Only clear the layer if it is still the back one.
+                if (out != layers[front]) out.setImageDrawable(null);
+            }).start();
         } else {
             in.setAlpha(1f);
             out.setImageDrawable(null);

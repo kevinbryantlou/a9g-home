@@ -72,6 +72,14 @@ public class HomeActivity extends Activity {
     protected void onCreate(Bundle state) {
         super.onCreate(state);
         night = isNight();
+        CrashGuard.install(this);
+        if (CrashGuard.crashedRecently(this)) {
+            // A crash in any phase (not just here) within the last minute: with Google's
+            // launcher disabled, Android would relaunch us straight back into it, forever.
+            safeMode = true;
+            setContentView(safeView());
+            return;
+        }
         try {
             setContentView(build());
             applyNight();
@@ -105,7 +113,10 @@ public class HomeActivity extends Activity {
             b.setOnClickListener(v -> {
                 if (which == 0) Sources.start(this, Sources.settingsIntent());
                 else if (which == 1) confirmRestoreStockHome(this);
-                else recreate();
+                else {
+                    CrashGuard.clear(this);
+                    recreate();
+                }
             });
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(px(640), ViewGroup.LayoutParams.WRAP_CONTENT);
             lp.topMargin = px(24);
@@ -118,6 +129,12 @@ public class HomeActivity extends Activity {
     protected void onStart() {
         super.onStart();
         if (safeMode) return;
+        boolean n = isNight();
+        if (n != night) {
+            night = n;
+            applyNight();
+            applyFocus(focus, false);
+        }
         IntentFilter f = new IntentFilter();
         f.addAction(Intent.ACTION_TIME_TICK);
         f.addAction(Intent.ACTION_TIME_CHANGED);
@@ -538,6 +555,11 @@ public class HomeActivity extends Activity {
                 }
                 break;
             case 1:
+                // All apps runs in this process; free the two full-screen photos first.
+                if (slideshow != null) {
+                    slideshow.stop();
+                    slideshow.release();
+                }
                 startActivity(new Intent(this, AllAppsActivity.class));
                 break;
             default:
@@ -561,9 +583,8 @@ public class HomeActivity extends Activity {
                         + "then press Home. This app stays installed.")
                 .setPositiveButton(enabled ? "Restore" : "Continue", (d, w) -> {
                     if (enabled) {
-                        a.getPackageManager().clearPackagePreferredActivities(a.getPackageName());
-                        Sources.start(a, new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME)
-                                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                        // Enabled, it already wins HOME on priority; just go there.
+                        Sources.start(a, Sources.stockHomeIntent());
                     } else {
                         Sources.start(a, Sources.stockHomeAppInfoIntent());
                     }

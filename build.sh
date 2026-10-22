@@ -9,7 +9,8 @@ SDK=${ANDROID_SDK_ROOT:-/opt/homebrew/share/android-commandlinetools}
 BT=$SDK/build-tools/34.0.0
 JAR=$SDK/platforms/android-29/android.jar
 VERSION_CODE=${VERSION_CODE:-$(git rev-list --count HEAD 2>/dev/null || echo 1)}
-VERSION_NAME=${VERSION_NAME:-1.0.$VERSION_CODE}
+DIRTY=$([ -n "$(git status --porcelain 2>/dev/null)" ] && echo "-dirty" || true)
+VERSION_NAME=${VERSION_NAME:-1.0.$VERSION_CODE$DIRTY}
 KEY=${KEY:-$HOME/.a9g-home/release.jks}
 OUT=build
 
