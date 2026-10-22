@@ -1,0 +1,162 @@
+[
+ {
+  "file": "golden_gate.jpg",
+  "credit": "Golden Gate Bridge, San Francisco. Photo: Dietmar Rabich, CC BY-SA 4.0",
+  "place": "Golden Gate Bridge, San Francisco",
+  "artist": "Dietmar Rabich",
+  "license": "CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:San_Francisco_(CA,_USA),_Golden_Gate_Bridge_--_2022_--_3019.jpg"
+ },
+ {
+  "file": "grand_canyon.jpg",
+  "credit": "Grand Canyon, Arizona. Photo: Tuxyso, CC BY-SA 3.0",
+  "place": "Grand Canyon, Arizona",
+  "artist": "Tuxyso",
+  "license": "CC BY-SA 3.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Grand_Canyon_Powell_Point_Evening_Light_02_2013.jpg"
+ },
+ {
+  "file": "yosemite.jpg",
+  "credit": "Yosemite Valley, California. Photo: Diliff, CC BY-SA 3.0",
+  "place": "Yosemite Valley, California",
+  "artist": "Diliff",
+  "license": "CC BY-SA 3.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Tunnel_View,_Yosemite_Valley,_Yosemite_NP_-_Diliff.jpg"
+ },
+ {
+  "file": "zion.jpg",
+  "credit": "Zion Canyon, Utah. Photo: Óðinn, CC BY-SA 2.5 ca",
+  "place": "Zion Canyon, Utah",
+  "artist": "Óðinn",
+  "license": "CC BY-SA 2.5 ca",
+  "source": "https://commons.wikimedia.org/wiki/File:Overlook_trail_view_-_Zion_Canyon.jpg"
+ },
+ {
+  "file": "arches.jpg",
+  "credit": "Delicate Arch, Utah. Photo: Ymaup, CC BY-SA 3.0",
+  "place": "Delicate Arch, Utah",
+  "artist": "Ymaup",
+  "license": "CC BY-SA 3.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Delicate_Arch_sunset.jpg"
+ },
+ {
+  "file": "monument_valley.jpg",
+  "credit": "Monument Valley, Arizona. Photo: Christian Mehlführer, User:Chmehl, CC BY 2.5",
+  "place": "Monument Valley, Arizona",
+  "artist": "Christian Mehlführer, User:Chmehl",
+  "license": "CC BY 2.5",
+  "source": "https://commons.wikimedia.org/wiki/File:Monument_Valley_Sunset_MC.jpg"
+ },
+ {
+  "file": "antelope.jpg",
+  "credit": "Antelope Canyon, Arizona. Photo: King of Hearts, CC BY-SA 4.0",
+  "place": "Antelope Canyon, Arizona",
+  "artist": "King of Hearts",
+  "license": "CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Lower_Antelope_Canyon_November_2018_006.jpg"
+ },
+ {
+  "file": "yellowstone.jpg",
+  "credit": "Grand Prismatic Spring, Yellowstone. Photo: Clément Bardot, CC BY-SA 3.0",
+  "place": "Grand Prismatic Spring, Yellowstone",
+  "artist": "Clément Bardot",
+  "license": "CC BY-SA 3.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Grand_Prismatic_Spring.jpg"
+ },
+ {
+  "file": "teton.jpg",
+  "credit": "Teton Range, Wyoming. Photo: DXR, CC BY-SA 4.0",
+  "place": "Teton Range, Wyoming",
+  "artist": "DXR",
+  "license": "CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Mt._Moran_and_Bivouac_Peak,_Teton_Range,_East_view_20110818_2.jpg"
+ },
+ {
+  "file": "big_sur.jpg",
+  "credit": "McWay Falls, Big Sur. Photo: King of Hearts, CC BY-SA 3.0",
+  "place": "McWay Falls, Big Sur",
+  "artist": "King of Hearts",
+  "license": "CC BY-SA 3.0",
+  "source": "https://commons.wikimedia.org/wiki/File:McWay_Falls_Big_Sur_May_2011_006.jpg"
+ },
+ {
+  "file": "moraine.jpg",
+  "credit": "Moraine Lake, Banff. Photo: Chensiyuan, CC BY-SA 4.0",
+  "place": "Moraine Lake, Banff",
+  "artist": "Chensiyuan",
+  "license": "CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:1_moraine_lake_pano_2019.jpg"
+ },
+ {
+  "file": "iceland.jpg",
+  "credit": "Kirkjufell, Iceland. Photo: Jakub Hałun, CC BY 4.0",
+  "place": "Kirkjufell, Iceland",
+  "artist": "Jakub Hałun",
+  "license": "CC BY 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Kirkjufell,_Iceland,_20240714_1631_0713.jpg"
+ },
+ {
+  "file": "matterhorn.jpg",
+  "credit": "Matterhorn, Switzerland",
+  "place": "Matterhorn, Switzerland",
+  "artist": "Sam Ferrara samferrara",
+  "license": "CC0",
+  "source": "https://commons.wikimedia.org/wiki/File:Matterhorn_sunset_2016_(Unsplash).jpg"
+ },
+ {
+  "file": "fjord.jpg",
+  "credit": "Geirangerfjord, Norway. Photo: Ximonic (Simo Räsänen), CC BY-SA 3.0",
+  "place": "Geirangerfjord, Norway",
+  "artist": "Ximonic (Simo Räsänen)",
+  "license": "CC BY-SA 3.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Geirangerfjord_from_%C3%98rnesvingen,_2013_June.jpg"
+ },
+ {
+  "file": "machu.jpg",
+  "credit": "Machu Picchu, Peru. Photo: Diego Delso, CC BY-SA 4.0",
+  "place": "Machu Picchu, Peru",
+  "artist": "Diego Delso",
+  "license": "CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Machu_Picchu,_Per%C3%BA,_2015-07-30,_DD_47.JPG"
+ },
+ {
+  "file": "fuji.jpg",
+  "credit": "Mount Fuji, Japan",
+  "place": "Mount Fuji, Japan",
+  "artist": "Romain Guy from San Francisco, USA",
+  "license": "CC0",
+  "source": "https://commons.wikimedia.org/wiki/File:Mount_Fuji_at_sunset,_March_2025.jpg"
+ },
+ {
+  "file": "patagonia.jpg",
+  "credit": "Torres del Paine, Chile. Photo: Diego Delso, CC BY-SA 3.0",
+  "place": "Torres del Paine, Chile",
+  "artist": "Diego Delso",
+  "license": "CC BY-SA 3.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Cuernos_y_Torres_del_Paine,_Parque_Nacional_Torres_del_Paine,_Chile2.jpg"
+ },
+ {
+  "file": "milford.jpg",
+  "credit": "Milford Sound, New Zealand. Photo: Krzysztof Golik, CC BY-SA 4.0",
+  "place": "Milford Sound, New Zealand",
+  "artist": "Krzysztof Golik",
+  "license": "CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Milford_Sound_in_Fiordland_National_Park_08.jpg"
+ },
+ {
+  "file": "dolomites.jpg",
+  "credit": "Tre Cime di Lavaredo, Dolomites. Photo: Ximonic (Simo Räsänen), CC BY-SA 4.0",
+  "place": "Tre Cime di Lavaredo, Dolomites",
+  "artist": "Ximonic (Simo Räsänen)",
+  "license": "CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Croda_dei_Toni_and_Tre_Cime_di_Lavaredo_from_Monte_Specie,_Val_Pusteria,_Trentino-Alto_Adige,_Italy,_2025_October.jpg"
+ },
+ {
+  "file": "death_valley.jpg",
+  "credit": "Zabriskie Point, Death Valley. Photo: King of Hearts, CC BY-SA 3.0",
+  "place": "Zabriskie Point, Death Valley",
+  "artist": "King of Hearts",
+  "license": "CC BY-SA 3.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Zabriskie_Point_Death_Valley_December_2013_002.jpg"
+ }
+]
