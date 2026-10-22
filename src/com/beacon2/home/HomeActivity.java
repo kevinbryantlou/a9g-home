@@ -226,12 +226,6 @@ public class HomeActivity extends Activity {
         barp.topMargin = px(950);
         content.addView(bar, barp);
 
-        for (TextView t : rows) shadow(t);
-        for (TextView t : buttons) shadow(t);
-        shadow(clock);
-        shadow(date);
-        shadow(credit);
-
         slideshow = new Slideshow(this, a, b, credit);
         if (slideshow.isEmpty()) {
             slideshow = null;
@@ -246,10 +240,6 @@ public class HomeActivity extends Activity {
             int base = t.getBaseline();
             if (base > 0) t.setPivotY(base);
         });
-    }
-
-    private void shadow(TextView t) {
-        t.setShadowLayer(px(14), 0, px(2), 0x8C000000);
     }
 
     private ImageView photoLayer() {
@@ -319,7 +309,7 @@ public class HomeActivity extends Activity {
 
     /** The only layer between photo and menu: a neutral shade. */
     private void applyShade() {
-        // One shade, one number: 40% by day, 60% at night. Text carries its own soft shadow.
+        // One shade, one number: 40% by day, 60% at night.
         int alpha = slideshow == null ? 0xFF : (night ? 0x99 : 0x66);
         tint.setBackgroundColor((alpha << 24) | 0x0A0A0A);
     }
