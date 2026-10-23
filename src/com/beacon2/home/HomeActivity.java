@@ -64,6 +64,7 @@ public class HomeActivity extends Activity {
     private boolean idle, resumed, night, consumeKeyUp;
     /** Set if the normal screen failed to build; a plain fallback screen is shown instead. */
     private boolean safeMode;
+    private boolean returningFromAllApps, bannersStale, packageReceiverRegistered;
     private int shiftStep;
 
     // ---- lifecycle -------------------------------------------------------
@@ -104,6 +105,7 @@ public class HomeActivity extends Activity {
         msg.setText("The home screen hit a problem.");
         msg.setTextColor(0xFFFFFFFF);
         msg.setTextSize(28);
+        msg.setGravity(Gravity.CENTER);
         box.addView(msg);
         String[] labels = {"Settings", "Use Google's home screen", "Try again"};
         for (int i = 0; i < labels.length; i++) {
@@ -129,6 +131,15 @@ public class HomeActivity extends Activity {
     protected void onStart() {
         super.onStart();
         if (safeMode) return;
+        if (!packageReceiverRegistered) {
+            IntentFilter pf = new IntentFilter();
+            pf.addAction(Intent.ACTION_PACKAGE_ADDED);
+            pf.addAction(Intent.ACTION_PACKAGE_REPLACED);
+            pf.addAction(Intent.ACTION_PACKAGE_REMOVED);
+            pf.addDataScheme("package");
+            registerReceiver(packageReceiver, pf);
+            packageReceiverRegistered = true;
+        }
         boolean n = isNight();
         if (n != night) {
             night = n;
@@ -141,7 +152,13 @@ public class HomeActivity extends Activity {
         f.addAction(Intent.ACTION_TIMEZONE_CHANGED);
         registerReceiver(timeReceiver, f);
         updateClock();
-        loadBannersAsync();
+        if (banners[0] == null || bannersStale) loadBannersAsync();
+        if (returningFromAllApps) {
+            returningFromAllApps = false;
+            // All apps' banners and window buffers are garbage now; Bitmap memory is only
+            // returned on a GC, which may not come for minutes on an idle home screen.
+            handler.postDelayed(() -> Runtime.getRuntime().gc(), 1_000);
+        }
         if (slideshow != null) slideshow.start();
         handler.postDelayed(shift, SHIFT_MS);
         scheduleIdle();
@@ -169,6 +186,17 @@ public class HomeActivity extends Activity {
         if (slideshow != null) slideshow.stop();
         handler.removeCallbacksAndMessages(null);
         super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (packageReceiverRegistered) {
+            try {
+                unregisterReceiver(packageReceiver);
+            } catch (IllegalArgumentException ignored) {
+            }
+        }
+        super.onDestroy();
     }
 
     @Override
@@ -263,7 +291,7 @@ public class HomeActivity extends Activity {
         });
         bannerFrame.setClipToOutline(true);
         for (int i = 0; i < 2; i++) {
-            ImageView iv = new ImageView(this);
+            ImageView iv = new FlatImageView(this);
             iv.setScaleType(ImageView.ScaleType.FIT_XY);
             bannerFrame.addView(iv, match());
             bannerLayers[i] = iv;
@@ -308,7 +336,7 @@ public class HomeActivity extends Activity {
     }
 
     private ImageView photoLayer() {
-        ImageView v = new ImageView(this);
+        ImageView v = new FlatImageView(this);
         v.setScaleType(ImageView.ScaleType.CENTER_CROP);
         v.setLayoutParams(match());
         return v;
@@ -424,6 +452,7 @@ public class HomeActivity extends Activity {
             }
             handler.post(() -> {
                 if (isDestroyed()) return;
+                bannersStale = false;
                 System.arraycopy(loaded, 0, banners, 0, ROWS);
                 showBanner(lastRow, false);
                 applyBannerNight();
@@ -560,6 +589,7 @@ public class HomeActivity extends Activity {
                     slideshow.stop();
                     slideshow.release();
                 }
+                returningFromAllApps = true;
                 startActivity(new Intent(this, AllAppsActivity.class));
                 break;
             default:
@@ -637,6 +667,13 @@ public class HomeActivity extends Activity {
             content.setTranslationX(px((shiftStep % 3 - 1) * 4));
             content.setTranslationY(px((shiftStep / 3 - 1) * 4));
             handler.postDelayed(this, SHIFT_MS);
+        }
+    };
+
+    /** Reload banners on the next start if any app was installed, updated or removed. */
+    private final BroadcastReceiver packageReceiver = new BroadcastReceiver() {
+        @Override public void onReceive(Context c, Intent i) {
+            bannersStale = true;
         }
     };
 

@@ -107,7 +107,17 @@ final class Slideshow {
 
     /** Release both bitmaps; called when the screen is not visible for a while. */
     void release() {
-        for (ImageView v : layers) v.setImageDrawable(null);
+        for (ImageView v : layers) clear(v);
+    }
+
+    /** Detach and free a layer's photo. Photos are decoded here, so nothing else holds them. */
+    private static void clear(ImageView v) {
+        android.graphics.drawable.Drawable d = v.getDrawable();
+        v.setImageDrawable(null);
+        if (d instanceof android.graphics.drawable.BitmapDrawable) {
+            Bitmap b = ((android.graphics.drawable.BitmapDrawable) d).getBitmap();
+            if (b != null && !b.isRecycled()) b.recycle();
+        }
     }
 
     private final Runnable advance = new Runnable() {
@@ -143,11 +153,11 @@ final class Slideshow {
             in.setAlpha(0f);
             in.animate().alpha(1f).setDuration(FADE_MS).withEndAction(() -> {
                 // Only clear the layer if it is still the back one.
-                if (out != layers[front]) out.setImageDrawable(null);
+                if (out != layers[front]) clear(out);
             }).start();
         } else {
             in.setAlpha(1f);
-            out.setImageDrawable(null);
+            clear(out);
         }
         front = 1 - front;
     }
