@@ -679,12 +679,6 @@ public class HomeActivity extends Activity {
             return true;
         }
 
-        if (code == KeyEvent.KEYCODE_MENU) {
-            if (e.getAction() == KeyEvent.ACTION_DOWN && e.isLongPress()) {
-                confirmRestoreStockHome(this);
-            }
-            return true;
-        }
         if (!ours) return super.dispatchKeyEvent(e); // mic, Assistant, volume, Home: system's
 
         if (e.getAction() != KeyEvent.ACTION_DOWN) return true;
@@ -766,7 +760,7 @@ public class HomeActivity extends Activity {
     }
 
     /**
-     * Hand HOME back to Google's launcher. Shared with All apps and the long-press on Menu.
+     * Hand HOME back to Google's launcher. Shared by All apps and the safe-mode screen.
      * If the launcher is disabled (the normal state, since its system priority otherwise
      * always wins HOME), this app cannot re-enable it; it opens the launcher's app-info
      * page so the user can press Enable, after which HOME goes back to it on its own.
