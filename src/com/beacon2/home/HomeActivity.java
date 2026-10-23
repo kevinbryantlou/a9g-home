@@ -46,7 +46,9 @@ public class HomeActivity extends Activity {
     private static final long MOVE_MS = 180, BANNER_MS = 160;
     private static final long IDLE_MS = 45_000, SHIFT_MS = 60_000;
     private static final float UNFOCUSED_SCALE = 0.64f;
-    private static final float FORECAST_ALPHA = 0.72f, IDLE_WEATHER_ALPHA = 0.85f;
+    // Right column type: 128 time, 64 temperature, then one secondary size (26) ranked by
+    // opacity: caption and forecast 85%, date 60%, photo credit 50% in both states.
+    private static final float FORECAST_ALPHA = 0.85f, IDLE_WEATHER_ALPHA = 0.85f, CREDIT_ALPHA = 0.5f;
 
     private final Handler handler = new Handler(Looper.getMainLooper());
     private final DecelerateInterpolator decel = new DecelerateInterpolator(1.5f);
@@ -259,10 +261,10 @@ public class HomeActivity extends Activity {
         root.addView(leftShade, new FrameLayout.LayoutParams(px(845), ViewGroup.LayoutParams.MATCH_PARENT, Gravity.START));
 
         credit = Ui.text(this, 20, 500, 0xFFFFFFFF);
-        credit.setAlpha(0.5f);
+        credit.setAlpha(CREDIT_ALPHA);
         FrameLayout.LayoutParams cp = wrap(Gravity.BOTTOM | Gravity.END);
         cp.rightMargin = px(110);
-        cp.bottomMargin = px(56);
+        cp.bottomMargin = px(47);
         root.addView(credit, cp);
 
         content = new FrameLayout(this);
@@ -319,7 +321,8 @@ public class HomeActivity extends Activity {
         root.addView(buildWeatherBlock(), wxParams());
         FrameLayout.LayoutParams fp = wrap(Gravity.BOTTOM | Gravity.END);
         fp.rightMargin = px(110);
-        fp.bottomMargin = px(98); // credit is 20 px at 56 px from the bottom
+        // Puts the forecast's baseline on the Inputs / All apps / Settings baseline (~y 992).
+        fp.bottomMargin = px(82);
         root.addView(forecast, fp);
 
         // Optional start photo, e.g. `am start -n com.beacon2.home/.HomeActivity --es photo big_sur.jpg`.
@@ -363,7 +366,7 @@ public class HomeActivity extends Activity {
         date.setAlpha(0.6f);
         wxBlock.addView(date, blockRow(12));
 
-        caption = Ui.text(this, 28, 500, 0xFFFFFFFF);
+        caption = Ui.text(this, 26, 500, 0xFFFFFFFF);
         caption.setAlpha(0.85f);
         wxBlock.addView(caption, blockRow(10));
 
@@ -806,7 +809,7 @@ public class HomeActivity extends Activity {
                 wxBlock.animate().alpha(IDLE_WEATHER_ALPHA).setDuration(1500).start();
                 forecast.animate().alpha(FORECAST_ALPHA * IDLE_WEATHER_ALPHA).setDuration(1500).start();
                 animateShade(idleShade(), 1500);
-                credit.animate().alpha(0.7f).setDuration(1500).start();
+                credit.animate().alpha(CREDIT_ALPHA).setDuration(1500).start();
             } else {
                 content.animate().alpha(0.5f).setDuration(1500).start();
             }
@@ -826,7 +829,7 @@ public class HomeActivity extends Activity {
         wxBlock.animate().alpha(1f).setDuration(d).start();
         forecast.animate().alpha(FORECAST_ALPHA).setDuration(d).start();
         animateShade(homeShade(), d);
-        credit.animate().alpha(0.5f).setDuration(d).start();
+        credit.animate().alpha(CREDIT_ALPHA).setDuration(d).start();
         scheduleIdle();
     }
 
