@@ -1,0 +1,30 @@
+<!doctype html><html><head><meta charset="utf-8"><title>A Faceplate</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tiles.css"><style>
+*{margin:0;box-sizing:border-box}
+body{width:1920px;height:1080px;background:#1a1916;color:#d8d3c8;font-family:"Archivo",sans-serif;overflow:hidden}
+.top{position:absolute;left:120px;right:120px;top:84px;display:flex;justify-content:space-between;align-items:flex-end}
+.vfd{background:#0c0d0c;border:1px solid #2c2b27;border-radius:6px;padding:14px 24px;font:500 54px/1 "IBM Plex Mono",monospace;color:#9fe6cf;letter-spacing:.04em}
+.date{font:500 22px "IBM Plex Mono";color:#8a857a;margin-bottom:6px}
+.plate{position:absolute;left:120px;right:120px;top:300px;padding:44px 44px 36px;background:linear-gradient(#24231f,#1f1e1b);border:1px solid #33312c;border-radius:10px}
+.src{display:grid;grid-template-columns:repeat(4,1fr);gap:36px}
+.s{position:relative}
+.s .bn{height:232px;border-radius:6px;font-size:400px;outline:2px solid #34322d}
+.s .lamp{width:12px;height:12px;border-radius:50%;background:#3a3832;margin:0 auto 16px}
+.s .lbl{margin-top:18px;text-align:center;font:600 24px "Archivo";font-stretch:85%;color:#8a857a}
+.s.on .lamp{background:#ffb02e;box-shadow:0 0 10px #ffb02e99}
+.s.on .bn{outline:5px solid #f3eee3;outline-offset:6px}
+.s.on .lbl{color:#f3eee3}
+.row2{position:absolute;left:120px;top:820px;display:flex;gap:20px}
+.k{height:76px;padding:0 34px;display:flex;align-items:center;border:1px solid #3a3832;border-radius:6px;font:600 26px "Archivo";font-stretch:85%;color:#b9b3a6;background:#201f1c}
+.k.sp{padding:0;width:136px;overflow:hidden}.k.sp .bn{width:100%;height:100%;font-size:300px}
+</style></head><body>
+<div class="top"><div><div class="date">THU 22 OCT</div><div class="vfd">1:14 PM</div></div></div>
+<div class="plate"><div class="src">
+<div class="s"><div class="lamp"></div><div class="bn netflix"><span>NETFLIX</span></div><div class="lbl">Netflix</div></div>
+<div class="s on"><div class="lamp"></div><div class="bn youtube"><span>YouTube</span></div><div class="lbl">YouTube</div></div>
+<div class="s"><div class="lamp"></div><div class="bn prime"><span><b>prime</b> video</span></div><div class="lbl">Prime Video</div></div>
+<div class="s"><div class="lamp"></div><div class="bn ps"><span>PlayStation</span></div><div class="lbl">PlayStation</div></div>
+</div></div>
+<div class="row2"><div class="k sp"><div class="bn spotify"><span>Spotify</span></div></div><div class="k">Inputs</div><div class="k">All apps</div><div class="k">Settings</div><div class="k">Stock home</div></div>
+</body></html>

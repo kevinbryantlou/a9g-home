@@ -1,0 +1,40 @@
+<!doctype html><html><head><meta charset="utf-8"><link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet"><style>
+*{margin:0;box-sizing:border-box}
+body{width:1920px;height:1080px;overflow:hidden;background:#101114;font-family:"Schibsted Grotesk",sans-serif;color:#f4f4f5;position:relative}
+.hero{position:absolute;left:0;right:0;top:0;height:600px;background:radial-gradient(120% 140% at 78% 40%,#7a1414 0%,#3a0b0b 45%,#101114 100%)}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,#101114)}
+.clock{position:absolute;right:96px;top:64px;text-align:right;z-index:2}
+.clock b{display:block;font:600 44px/1 "Schibsted Grotesk"}
+.clock span{font:500 22px "Schibsted Grotesk";color:#c9c9cf}
+.logo{position:absolute;left:96px;top:150px;z-index:2;width:560px;height:315px;border-radius:20px;overflow:hidden;box-shadow:0 30px 60px #0008}
+.logo img{width:100%;height:100%;display:block}
+.info{position:absolute;left:712px;top:196px;z-index:2;width:900px}
+.info h1{font:800 84px/1 "Schibsted Grotesk";letter-spacing:-.02em}
+.info p{margin-top:22px;font:500 30px/1.4 "Schibsted Grotesk";color:#e3d5d5}
+.info .stat{display:flex;gap:40px;margin-top:34px}
+.info .stat div{font:500 22px "Schibsted Grotesk";color:#b9a9a9}
+.info .stat b{display:block;font:700 40px "Schibsted Grotesk";color:#fff;margin-bottom:4px}
+.row{position:absolute;left:96px;top:640px;display:flex;gap:28px}
+.t{width:392px}
+.t .im{width:392px;height:220px;border-radius:16px;overflow:hidden;box-shadow:0 8px 20px #0006}
+.t img{width:100%;height:100%;display:block}
+.t .ps{width:100%;height:100%;background:#003791;display:flex;align-items:center;justify-content:center;font:800 72px "Schibsted Grotesk"}
+.t .n{margin-top:16px;font:600 26px "Schibsted Grotesk";color:#a1a1aa}
+.t.on .im{outline:5px solid #fff;outline-offset:6px;transform:scale(1.06);transform-origin:center top}
+.t.on .n{color:#fff;margin-top:30px}
+.util{position:absolute;left:96px;top:944px;display:flex;gap:16px}
+.u{height:60px;padding:0 28px;border-radius:30px;background:#1f2026;display:flex;align-items:center;font:600 24px "Schibsted Grotesk";color:#d4d4d8}
+</style></head><body>
+<div class="hero"></div>
+<div class="clock"><b>1:14 PM</b><span>Thursday 22 October</span></div>
+<div class="logo"><img src="img/youtube.png"></div>
+<div class="info"><h1>YouTube</h1><p>Last opened last night at 9:40</p>
+<div class="stat"><div><b>0.6 h</b>this week</div><div><b>22 h</b>this year</div></div></div>
+<div class="row">
+<div class="t on"><div class="im"><img src="img/youtube.png"></div><div class="n">YouTube</div></div>
+<div class="t"><div class="im"><img src="img/prime.png"></div><div class="n">Prime Video</div></div>
+<div class="t"><div class="im"><img src="img/netflix.png"></div><div class="n">Netflix</div></div>
+<div class="t"><div class="im"><div class="ps">PS4</div></div><div class="n">PS4 &nbsp;HDMI 2</div></div>
+</div>
+<div class="util"><div class="u">Inputs</div><div class="u">All apps</div><div class="u">Settings</div></div>
+</body></html>

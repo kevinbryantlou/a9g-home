@@ -1,0 +1,8 @@
+/* stand-in banners: the real build uses each app's own leanback banner */
+.bn{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;font-family:"Archivo",system-ui,sans-serif}
+.bn.netflix{background:#000}.bn.netflix span{color:#e50914;font-weight:900;font-size:.17em;letter-spacing:.02em;font-stretch:75%}
+.bn.youtube{background:#fff}.bn.youtube span{color:#111;font-weight:700;font-size:.11em;display:flex;align-items:center;gap:.25em}
+.bn.youtube span::before{content:"";width:1.4em;height:1em;border-radius:.28em;background:#f00;clip-path:none}
+.bn.prime{background:#0f171e}.bn.prime span{color:#fff;font-weight:600;font-size:.11em}.bn.prime span b{color:#1a98ff}
+.bn.ps{background:#00439c}.bn.ps span{color:#fff;font-weight:700;font-size:.1em}
+.bn.spotify{background:#121212}.bn.spotify span{color:#1ed760;font-weight:800;font-size:.13em}

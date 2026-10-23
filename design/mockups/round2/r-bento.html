@@ -1,0 +1,45 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Bento</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Schibsted+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;box-sizing:border-box}
+body{width:1920px;height:1080px;overflow:hidden;background:#211812;font-family:"Schibsted Grotesk",sans-serif;color:#FAF6F1}
+.g{position:absolute;inset:72px 96px;display:grid;grid-template-columns:repeat(12,1fr);grid-template-rows:repeat(6,1fr);gap:24px}
+.c{border-radius:22px;position:relative;overflow:hidden;padding:28px}
+.clock{grid-column:1/5;grid-row:1/4;background:#F5A623;color:#2D2016}
+.clock b{display:block;font:400 190px/0.9 "DM Serif Display"}
+.clock .d{font:700 30px "Schibsted Grotesk";margin-top:18px}
+.clock .w{position:absolute;left:28px;bottom:26px;font:600 24px "Schibsted Grotesk";color:#5b4126}
+.yt{grid-column:5/10;grid-row:1/4;background:#f3f3f3;padding:0}
+.yt img{width:100%;height:calc(100% - 62px);object-fit:contain}
+.app .meta{position:absolute;left:0;right:0;bottom:0;padding:18px 26px;display:flex;justify-content:space-between;font:600 24px "Schibsted Grotesk";color:#2D2016;background:#ffffffd9}
+.app .meta span{font-weight:500;color:#6B5D52}
+.week{grid-column:10/13;grid-row:1/4;background:#33261d}
+.week h3{font:700 22px "Schibsted Grotesk";color:#A89B91;margin-bottom:22px}
+.bar{display:grid;grid-template-columns:110px 1fr 64px;align-items:center;gap:12px;margin-bottom:20px;font:600 22px "Schibsted Grotesk"}
+.bar i{height:16px;border-radius:8px;background:#F5A623}
+.bar em{font-style:normal;color:#A89B91;text-align:right;font-weight:500}
+.pr{grid-column:1/5;grid-row:4/7;background:#1a98ff;padding:0}
+.pr img,.nf img{width:100%;height:calc(100% - 62px);object-fit:contain}
+.nf{grid-column:5/9;grid-row:4/7;background:#fff;padding:0}
+.ps{grid-column:9/13;grid-row:4/6;background:#00439c;display:flex;flex-direction:column;justify-content:space-between}
+.ps b{font:800 76px/1 "Schibsted Grotesk"}
+.ps span{font:600 24px "Schibsted Grotesk";color:#bcd2f2}
+.row{grid-column:9/13;grid-row:6/7;display:flex;gap:16px}
+.k{flex:1;border-radius:16px;background:#33261d;display:flex;align-items:center;justify-content:center;font:700 22px "Schibsted Grotesk";color:#e8ddd2}
+.on{outline:6px solid #FEFCF9;outline-offset:7px}
+</style></head><body>
+<div class="g">
+ <div class="c clock"><b>1:14</b><div class="d">Thursday, 22 October</div><div class="w">68&deg; and clear in Pasadena</div></div>
+ <div class="c app yt on"><img src="img/youtube.png"><div class="meta">YouTube <span>last on 9:40 PM yesterday</span></div></div>
+ <div class="c week"><h3>THIS WEEK</h3>
+  <div class="bar">Netflix<i style="width:100%"></i><em>5.1h</em></div>
+  <div class="bar">YouTube<i style="width:63%"></i><em>3.2h</em></div>
+  <div class="bar">PS4<i style="width:47%;background:#6aa0ff"></i><em>2.4h</em></div>
+  <div class="bar">Prime<i style="width:16%"></i><em>0.8h</em></div>
+ </div>
+ <div class="c app pr"><img src="img/prime.png"><div class="meta">Prime Video <span>2 days ago</span></div></div>
+ <div class="c app nf"><img src="img/netflix.png"><div class="meta">Netflix <span>last night</span></div></div>
+ <div class="c ps"><b>PS4</b><span>HDMI 2 &middot; Switch to PlayStation</span></div>
+ <div class="row"><div class="k">Inputs</div><div class="k">All apps</div><div class="k">Settings</div></div>
+</div>
+</body></html>

@@ -1,0 +1,68 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Receiver</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;box-sizing:border-box}
+body{width:1920px;height:1080px;overflow:hidden;background:#15130f;font-family:"Archivo",sans-serif;position:relative}
+/* wood cabinet */
+.cab{position:absolute;inset:60px 72px;border-radius:18px;background:
+ repeating-linear-gradient(92deg,#4a2e1a 0 6px,#53341e 6px 9px,#47291a 9px 15px,#5a3920 15px 17px),#4a2e1a;box-shadow:inset 0 0 0 2px #2a190d,0 30px 60px #0008}
+/* brushed aluminium faceplate */
+.face{position:absolute;left:38px;right:38px;top:38px;bottom:38px;border-radius:8px;background:
+ repeating-linear-gradient(0deg,#d9d6cf 0 1px,#cfccc4 1px 2px,#dedbd4 2px 3px),#d6d3cb;box-shadow:inset 0 1px 0 #fff8,inset 0 -2px 0 #9994}
+.brand{position:absolute;left:56px;top:40px;font:800 30px "Archivo";font-stretch:110%;color:#2b2a27;letter-spacing:.04em}
+.brand small{font:600 17px "Archivo";color:#6b6760;margin-left:14px;letter-spacing:.02em}
+/* dial window */
+.dial{position:absolute;left:56px;right:56px;top:96px;height:250px;border-radius:6px;background:#141210;box-shadow:inset 0 3px 10px #000,0 1px 0 #fff9}
+.glass{position:absolute;inset:14px;border-radius:3px;background:linear-gradient(#2a2216,#1d1810);}
+.scale{position:absolute;left:40px;right:300px;top:46px;height:120px}
+.tick{position:absolute;bottom:40px;width:2px;height:16px;background:#e9c98a88}
+.tick.big{height:30px;background:#f0d49a}
+.mark{position:absolute;bottom:84px;transform:translateX(-50%);font:700 25px "Archivo";font-stretch:90%;color:#d7b878;letter-spacing:.03em;white-space:nowrap}
+.mark.on{color:#fff3d8}
+.rule{position:absolute;left:0;right:0;bottom:38px;height:2px;background:#e9c98a66}
+.needle{position:absolute;top:52px;bottom:-12px;width:5px;background:#e8442e;left:7%;border-radius:2px}
+.freq{position:absolute;right:34px;top:40px;width:240px;text-align:right}
+.freq b{display:block;font:500 92px/1 "IBM Plex Mono";color:#f2d79c}
+.freq span{font:500 22px "IBM Plex Mono";color:#b99c64}
+.sub{position:absolute;left:40px;bottom:22px;font:500 21px "IBM Plex Mono";color:#a88d5a}
+/* source buttons */
+.srcs{position:absolute;left:56px;right:56px;top:392px;display:grid;grid-template-columns:repeat(4,1fr);gap:36px}
+.sb{position:relative;border-radius:8px;padding:14px;background:linear-gradient(#f3f1ec,#c9c6be);box-shadow:0 2px 0 #8d8a83,0 6px 12px #0003}
+.sb img{display:block;width:100%;aspect-ratio:16/9;border-radius:4px}
+.sb .ps{width:100%;aspect-ratio:16/9;border-radius:4px}
+.ps{background:#00439c;color:#fff;display:flex;align-items:center;justify-content:center;font:800 70px "Archivo";letter-spacing:.02em}
+.sb .cap{display:flex;justify-content:space-between;align-items:center;margin-top:14px;font:700 24px "Archivo";font-stretch:90%;color:#2b2a27}
+.led{width:14px;height:14px;border-radius:50%;background:#7a6e5c;box-shadow:inset 0 1px 2px #0006}
+.sb.on{outline:6px solid #e8442e;outline-offset:6px}
+.sb.on .led{background:#ff5a36;box-shadow:0 0 0 3px #ff5a3640}
+.sb .hrs{font:500 19px "IBM Plex Mono";color:#6b6760}
+/* lower controls */
+.low{position:absolute;left:56px;right:56px;bottom:46px;display:flex;align-items:center;gap:22px}
+.btn{height:62px;padding:0 30px;border-radius:6px;background:linear-gradient(#efede8,#cbc8c0);box-shadow:0 2px 0 #8d8a83;display:flex;align-items:center;font:700 24px "Archivo";font-stretch:90%;color:#2b2a27}
+.knob{margin-left:auto;width:96px;height:96px;border-radius:50%;background:repeating-conic-gradient(#bdb9b1 0 4deg,#d6d3cb 4deg 8deg);box-shadow:0 4px 8px #0004,inset 0 0 0 10px #c9c6be}
+.knoblbl{font:600 17px "Archivo";color:#6b6760;margin-left:10px}
+</style></head><body>
+<div class="cab"><div class="face">
+<div class="brand">LOU<small>Model 55 &middot; Source Selector</small></div>
+<div class="dial"><div class="glass">
+ <div class="scale">
+  <div class="rule"></div>
+  <div class="tick big" style="left:7%"></div><div class="tick" style="left:15%"></div><div class="tick" style="left:23%"></div>
+  <div class="tick big" style="left:36%"></div><div class="tick" style="left:44%"></div><div class="tick" style="left:52%"></div>
+  <div class="tick big" style="left:65%"></div><div class="tick" style="left:73%"></div><div class="tick" style="left:81%"></div>
+  <div class="tick big" style="left:93%"></div>
+  <div class="mark on" style="left:7%">YOUTUBE</div><div class="mark" style="left:36%">PRIME VIDEO</div><div class="mark" style="left:65%">NETFLIX</div><div class="mark" style="left:93%">PS4</div>
+  <div class="needle"></div>
+ </div>
+ <div class="sub">YOUTUBE &nbsp; 3.2 H THIS WEEK &nbsp; LAST ON 9:40 PM YESTERDAY</div>
+ <div class="freq"><b>1:14</b><span>THU 22 OCT</span></div>
+</div></div>
+<div class="srcs">
+ <div class="sb on"><img src="img/youtube.png"><div class="cap">YouTube <span class="hrs">3.2 h</span><i class="led"></i></div></div>
+ <div class="sb"><img src="img/prime.png"><div class="cap">Prime Video <span class="hrs">0.8 h</span><i class="led"></i></div></div>
+ <div class="sb"><img src="img/netflix.png"><div class="cap">Netflix <span class="hrs">5.1 h</span><i class="led"></i></div></div>
+ <div class="sb"><div class="ps"><span>PS4</span></div><div class="cap">PS4 &middot; HDMI 2 <span class="hrs">2.4 h</span><i class="led"></i></div></div>
+</div>
+<div class="low"><div class="btn">Inputs</div><div class="btn">All apps</div><div class="btn">Settings</div></div>
+</div></div>
+</body></html>

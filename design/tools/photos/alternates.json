@@ -1,0 +1,34 @@
+[
+ {
+  "file": "fuji_alt.jpg",
+  "credit": "Mount Fuji, Japan",
+  "place": "Mount Fuji, Japan",
+  "artist": "U.S. Navy photo by Lt. j.g. Andrew Leatherwood",
+  "license": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:Grumman_E-2C_Hawkeyes_of_VAW-115_fly_past_Mount_Fuji_on_15_February_2007_(070215-N-2604L-024).jpg"
+ },
+ {
+  "file": "patagonia_alt.jpg",
+  "credit": "Torres del Paine, Chile. Photo: Charles J. Sharp, CC BY-SA 4.0",
+  "place": "Torres del Paine, Chile",
+  "artist": "Charles J. Sharp",
+  "license": "CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Andean_condor_(Vultur_gryphus)_male_in_flight_Torres_del_Paine.jpg"
+ },
+ {
+  "file": "yosemite_alt.jpg",
+  "credit": "Yosemite Valley, California. Photo: Yathin S Krishnappa, CC BY-SA 3.0",
+  "place": "Yosemite Valley, California",
+  "artist": "Yathin S Krishnappa",
+  "license": "CC BY-SA 3.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Canis_latrans_(Yosemite,_2009).jpg"
+ },
+ {
+  "file": "glacier_alt.jpg",
+  "credit": "Glacier National Park, Montana. Photo: Trougnouf, CC BY 4.0",
+  "place": "Glacier National Park, Montana",
+  "artist": "Trougnouf",
+  "license": "CC BY 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Hoary_Marmot_in_Glacier_National_Park.jpg"
+ }
+]

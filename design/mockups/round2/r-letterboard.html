@@ -1,0 +1,39 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Letterboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=Schibsted+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;box-sizing:border-box}
+body{width:1920px;height:1080px;overflow:hidden;background:#e9e1d4;font-family:"Schibsted Grotesk",sans-serif;position:relative}
+.wall{position:absolute;inset:0;background:repeating-linear-gradient(90deg,#e6ddcf 0 160px,#e9e1d4 160px 162px)}
+.board{position:absolute;left:120px;top:70px;width:1080px;height:430px;border-radius:6px;padding:22px;background:#b58a5a;box-shadow:0 18px 40px #3a2a1a44}
+.felt{width:100%;height:100%;border-radius:3px;background:repeating-linear-gradient(0deg,#1c1b1a 0 9px,#141312 9px 11px);padding:34px 40px;display:flex;flex-direction:column;justify-content:space-between}
+.ln{font:600 64px/1 "Oswald";color:#f4f1ea;letter-spacing:.08em;text-shadow:0 2px 0 #0008;white-space:nowrap}
+.ln.sm{font-size:44px;color:#e4dfd4}
+.ln .r{color:#ff6b4a}
+.note{position:absolute;left:1260px;top:90px;width:540px;height:300px;background:#fff8e6;transform:rotate(1.6deg);box-shadow:0 10px 24px #3a2a1a33;padding:34px 38px;font:600 28px/1.45 "Schibsted Grotesk";color:#3b2e22}
+.note b{display:block;font:700 22px "Schibsted Grotesk";color:#a07a4a;margin-bottom:10px}
+.tape{position:absolute;top:-16px;left:210px;width:120px;height:34px;background:#f5e7b8cc;transform:rotate(-3deg)}
+.posters{position:absolute;left:120px;right:120px;top:560px;display:grid;grid-template-columns:repeat(4,1fr);gap:40px}
+.p{background:#fbf8f2;padding:16px 16px 0;border-radius:4px;box-shadow:0 10px 22px #3a2a1a2e}
+.p img{display:block;width:100%;aspect-ratio:16/9}
+.p .ps{width:100%;aspect-ratio:16/9}
+.ps{background:#00439c;color:#fff;display:flex;align-items:center;justify-content:center;font:700 68px "Oswald";letter-spacing:.04em}
+.p .t{display:flex;justify-content:space-between;align-items:baseline;padding:16px 4px 18px;font:700 26px "Schibsted Grotesk";color:#2d2016}
+.p .t span{font:500 21px "Schibsted Grotesk";color:#7a6a5c}
+.p.on{transform:translateY(-14px) rotate(-1deg);box-shadow:0 0 0 6px #ff6b4a,0 24px 40px #3a2a1a44}
+.btns{position:absolute;left:120px;bottom:60px;display:flex;gap:18px}
+.b{height:60px;padding:0 28px;border-radius:30px;background:#2d2016;color:#f4ede2;display:flex;align-items:center;font:600 23px "Schibsted Grotesk"}
+</style></head><body><div class="wall"></div>
+<div class="board"><div class="felt">
+ <div class="ln">GOOD AFTERNOON</div>
+ <div class="ln">NOW SHOWING: <span class="r">YOUTUBE</span></div>
+ <div class="ln sm">THU 22 OCT &nbsp;&nbsp; 1:14 PM</div>
+</div></div>
+<div class="note"><div class="tape"></div><b>THIS WEEK</b>Netflix 5.1 h &middot; YouTube 3.2 h<br>PS4 2.4 h &middot; Prime 0.8 h<br>Last on: YouTube, 9:40 PM</div>
+<div class="posters">
+ <div class="p on"><img src="img/youtube.png"><div class="t">YouTube <span>3.2 h</span></div></div>
+ <div class="p"><img src="img/prime.png"><div class="t">Prime Video <span>0.8 h</span></div></div>
+ <div class="p"><img src="img/netflix.png"><div class="t">Netflix <span>5.1 h</span></div></div>
+ <div class="p"><div class="ps">PS4</div><div class="t">PlayStation <span>HDMI 2</span></div></div>
+</div>
+<div class="btns"><div class="b">Inputs</div><div class="b">All apps</div><div class="b">Settings</div></div>
+</body></html>
