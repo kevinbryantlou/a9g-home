@@ -21,3 +21,13 @@ Never rename `.HomeActivity`: Android drops the HOME preference when the HOME co
 ## Photos
 
 `assets/photos/` holds 20 landscape photos from Wikimedia Commons, cropped to 1920×1080. Licences and sources are in `assets/photos/photos.json`; CC BY / CC BY-SA photos are credited on screen. Font: Schibsted Grotesk, SIL OFL 1.1 (`assets/fonts/OFL.txt`).
+
+## Recovery card
+
+- **Home shows Google's home screen again.** Something re-enabled it (an update or reinstall of "Android TV Home" does this automatically). This app is still in the apps row. To make it Home again: Settings → Device Preferences → Developer options → USB debugging on; then `adb connect 192.168.86.171:5555 && adb shell pm disable-user --user 0 com.google.android.tvlauncher`; then debugging off. Never tap Update or Enable on "Android TV Home" in the Play Store.
+- **You want Google's home back.** All apps → Restore stock home → Continue → Enable → press Home. Or Settings → Apps → See all apps → Android TV Home → Enable.
+- **The home screen shows "hit a problem".** It crashed within the last minute; choose Try again, or Use Google's home screen.
+- **Home is a blank screen.** Only if this app was removed while Google's launcher was off. Say "Hey Google, open Settings", then Apps → See all apps → Android TV Home → Enable.
+- **Notifications.** All apps → BRAVIA notifications.
+- **Never uninstall this app before turning Android TV Home back on.**
+
