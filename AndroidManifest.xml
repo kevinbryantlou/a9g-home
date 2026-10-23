@@ -7,6 +7,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.beacon2.home">
 
+    <!-- Weather: one forecast fetch an hour at most; coarse (~2 km) location for where. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
     <uses-feature android:name="android.software.leanback" android:required="false" />
     <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
 

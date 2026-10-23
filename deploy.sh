@@ -8,4 +8,5 @@ TV=${TV:-192.168.86.171:5555}
 adb connect "$TV" >/dev/null
 adb -s "$TV" install -r build/a9g-home.apk
 adb -s "$TV" shell cmd package compile -m speed -f com.beacon2.home
+adb -s "$TV" shell pm grant com.beacon2.home android.permission.ACCESS_COARSE_LOCATION || true
 adb -s "$TV" shell dumpsys role | grep -A1 "android.app.role.HOME" | tail -1 || true

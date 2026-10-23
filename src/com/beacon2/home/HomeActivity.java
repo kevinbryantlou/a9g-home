@@ -31,6 +31,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.res.ColorStateList;
 
 import java.util.Date;
 
@@ -56,6 +57,13 @@ public class HomeActivity extends Activity {
     private ImageView[] bannerLayers = new ImageView[2];
     private int bannerFront = 0;
     private TextView clock, date, credit;
+    /** Top-right block: temperature + time, date, caption, forecast. Stays put in idle. */
+    private LinearLayout wxBlock, forecast;
+    private TextView wxTemp, caption;
+    private Weather weather;
+    private android.animation.ValueAnimator shadeAnim;
+    /** Current shade alphas, top / middle / bottom, 0..1. */
+    private final float[] shade = new float[3];
     private Slideshow slideshow;
     private final Bitmap[] banners = new Bitmap[ROWS];
 
@@ -160,6 +168,9 @@ public class HomeActivity extends Activity {
             handler.postDelayed(() -> Runtime.getRuntime().gc(), 1_000);
         }
         if (slideshow != null) slideshow.start();
+        if (weather == null) weather = new Weather(this);
+        renderWeather(weather.cached());
+        handler.post(weatherTick);
         handler.postDelayed(shift, SHIFT_MS);
         scheduleIdle();
     }
@@ -256,20 +267,6 @@ public class HomeActivity extends Activity {
         content = new FrameLayout(this);
         root.addView(content, match());
 
-        clock = Ui.text(this, 64, 500, 0xFFFFFFFF);
-        clock.setGravity(Gravity.END);
-        FrameLayout.LayoutParams clp = wrap(Gravity.TOP | Gravity.END);
-        clp.rightMargin = px(110);
-        clp.topMargin = px(80);
-        content.addView(clock, clp);
-
-        date = Ui.text(this, 26, 500, 0xFFFFFFFF);
-        date.setAlpha(0.55f);
-        FrameLayout.LayoutParams dp = wrap(Gravity.TOP | Gravity.END);
-        dp.rightMargin = px(110);
-        dp.topMargin = px(80 + 74);
-        content.addView(date, dp);
-
         for (int i = 0; i < ROWS; i++) {
             Sources.Source s = Sources.HOME[i];
             TextView t = Ui.text(this, 150, 700, 0xFFFFFFFF);
@@ -318,6 +315,8 @@ public class HomeActivity extends Activity {
         barp.topMargin = px(950);
         content.addView(bar, barp);
 
+        root.addView(buildWeatherBlock(), wxParams());
+
         // Optional start photo, e.g. `am start -n com.beacon2.home/.HomeActivity --es photo big_sur.jpg`.
         slideshow = new Slideshow(this, a, b, credit, getIntent().getStringExtra("photo"));
         if (slideshow.isEmpty()) {
@@ -326,6 +325,113 @@ public class HomeActivity extends Activity {
         }
         return root;
     }
+
+    /**
+     * Option D from the weather design review: right-aligned at x=1810, top y=64.
+     * Row 1: temperature (84 px) then time (128 px), sharing a baseline. Then the date,
+     * a sentence caption ("Mostly clear. High 67°, low 59°.") and a four-day line.
+     * It lives outside the menu layer, so idle only dims it to 85% instead of hiding it.
+     */
+    private View buildWeatherBlock() {
+        wxBlock = new LinearLayout(this);
+        wxBlock.setOrientation(LinearLayout.VERTICAL);
+        wxBlock.setGravity(Gravity.END);
+
+        LinearLayout top = new LinearLayout(this);
+        top.setOrientation(LinearLayout.HORIZONTAL);
+        top.setBaselineAligned(true);
+        wxTemp = Ui.text(this, 84, 400, 0xFFFFFFFF);
+        wxTemp.setLetterSpacing(-0.03f);
+        wxTemp.setAlpha(0.8f);
+        LinearLayout.LayoutParams tp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        tp.rightMargin = px(30);
+        top.addView(wxTemp, tp);
+        clock = Ui.text(this, 128, 400, 0xFFFFFFFF);
+        clock.setLetterSpacing(-0.035f);
+        clock.setAlpha(0.95f);
+        top.addView(clock);
+        wxBlock.addView(top);
+
+        date = Ui.text(this, 26, 500, 0xFFFFFFFF);
+        date.setAlpha(0.6f);
+        wxBlock.addView(date, blockRow(12));
+
+        caption = Ui.text(this, 28, 500, 0xFFFFFFFF);
+        caption.setAlpha(0.85f);
+        wxBlock.addView(caption, blockRow(10));
+
+        forecast = new LinearLayout(this);
+        forecast.setOrientation(LinearLayout.HORIZONTAL);
+        forecast.setGravity(Gravity.CENTER_VERTICAL);
+        forecast.setAlpha(0.72f);
+        wxBlock.addView(forecast, blockRow(14));
+        return wxBlock;
+    }
+
+    private LinearLayout.LayoutParams blockRow(int topMargin) {
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        lp.topMargin = px(topMargin);
+        return lp;
+    }
+
+    private FrameLayout.LayoutParams wxParams() {
+        FrameLayout.LayoutParams lp = wrap(Gravity.TOP | Gravity.END);
+        lp.rightMargin = px(110);
+        lp.topMargin = px(64);
+        return lp;
+    }
+
+    /** Fill or hide the weather parts; the time and date always show. */
+    private void renderWeather(Weather.Report r) {
+        if (wxTemp == null) return;
+        boolean ok = r != null && r.fresh();
+        int vis = ok ? View.VISIBLE : View.GONE;
+        wxTemp.setVisibility(vis);
+        caption.setVisibility(vis);
+        if (!ok) {
+            forecast.setVisibility(View.GONE);
+            return;
+        }
+        wxTemp.setText(r.temp + "°");
+        StringBuilder cap = new StringBuilder(Weather.words(r.code)).append('.');
+        if (r.days.length > 0) {
+            cap.append(" High ").append(r.days[0].high).append("°, low ").append(r.days[0].low).append("°.");
+        }
+        caption.setText(cap);
+        forecast.removeAllViews();
+        if (r.days.length < 5) {
+            forecast.setVisibility(View.GONE);
+            return;
+        }
+        int ink = textColor();
+        for (int i = 1; i < 5; i++) {
+            Weather.Day d = r.days[i];
+            TextView name = Ui.text(this, 26, 500, ink);
+            name.setText(d.name);
+            LinearLayout.LayoutParams np = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            if (i > 1) np.leftMargin = px(30);
+            forecast.addView(name, np);
+            ImageView icon = new ImageView(this);
+            icon.setImageResource(Weather.icon(d.code));
+            icon.setImageTintList(ColorStateList.valueOf(ink));
+            LinearLayout.LayoutParams ip = new LinearLayout.LayoutParams(px(28), px(28));
+            ip.leftMargin = px(10);
+            ip.rightMargin = px(8);
+            forecast.addView(icon, ip);
+            TextView hi = Ui.text(this, 26, 500, ink);
+            hi.setText(d.high + "°");
+            forecast.addView(hi);
+        }
+        forecast.setVisibility(View.VISIBLE);
+    }
+
+    private final Runnable weatherTick = new Runnable() {
+        @Override public void run() {
+            if (weather != null) weather.refreshIfStale(r -> renderWeather(r));
+            renderWeather(weather == null ? null : weather.cached()); // hides data past 2 h
+            handler.postDelayed(this, 30 * 60_000L);
+        }
+    };
 
     /** Scale rows toward their baseline so shrunken names keep their line spacing. */
     static void pinPivotToBaseline(final TextView t) {
@@ -400,16 +506,68 @@ public class HomeActivity extends Activity {
         return tops;
     }
 
-    /** The only layer between photo and menu: a neutral shade. */
+    /**
+     * The only full-screen layer between photo and menu: a neutral top-to-bottom gradient.
+     * Home: 30% flat (45% at night). Idle: 35/6/22% (45/12/25% at night), darker at the top
+     * so the weather block stays readable while the rest of the photo shows. The left
+     * gradient behind the names is separate and fades out in idle.
+     */
     private void applyShade() {
-        // Day: 30% everywhere plus 40% behind the names. Night scales both by 1.5x.
         float scale = night ? 1.5f : 1f;
-        int alpha = slideshow == null ? 0xFF : Math.round(0.30f * scale * 255);
-        tint.setBackgroundColor((alpha << 24) | 0x0A0A0A);
+        if (slideshow == null) {
+            setShade(1f, 1f, 1f);
+        } else if (idle) {
+            float[] t = idleShade();
+            setShade(t[0], t[1], t[2]);
+        } else {
+            setShade(0.30f * scale, 0.30f * scale, 0.30f * scale);
+        }
         int left = Math.round(0.40f * scale * 255) << 24;
         leftShade.setBackground(new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT,
                 new int[]{left, left, 0}));
         leftShade.setVisibility(slideshow == null ? View.GONE : View.VISIBLE);
+    }
+
+    private float[] homeShade() {
+        float a = night ? 0.45f : 0.30f;
+        return new float[]{a, a, a};
+    }
+
+    private float[] idleShade() {
+        return night ? new float[]{0.45f, 0.12f, 0.25f} : new float[]{0.35f, 0.06f, 0.22f};
+    }
+
+    private void setShade(float top, float mid, float bottom) {
+        shade[0] = top; shade[1] = mid; shade[2] = bottom;
+        GradientDrawable g = tint.getBackground() instanceof GradientDrawable
+                ? (GradientDrawable) tint.getBackground() : null;
+        int[] colors = {shadeColor(top), shadeColor(mid), shadeColor(bottom)};
+        if (g == null) {
+            tint.setBackground(new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, colors));
+        } else {
+            g.setColors(colors);
+        }
+    }
+
+    private static int shadeColor(float a) {
+        return (Math.round(Math.max(0f, Math.min(1f, a)) * 255) << 24) | 0x0A0A0A;
+    }
+
+    private void animateShade(final float[] to, long ms) {
+        if (shadeAnim != null) shadeAnim.cancel();
+        if (slideshow == null) return;
+        final float[] from = shade.clone();
+        if (ms <= 0) {
+            setShade(to[0], to[1], to[2]);
+            return;
+        }
+        shadeAnim = android.animation.ValueAnimator.ofFloat(0f, 1f);
+        shadeAnim.setDuration(ms);
+        shadeAnim.addUpdateListener(an -> {
+            float f = (float) an.getAnimatedValue();
+            setShade(from[0] + (to[0] - from[0]) * f, from[1] + (to[1] - from[1]) * f, from[2] + (to[2] - from[2]) * f);
+        });
+        shadeAnim.start();
     }
 
     private void showBanner(int row, boolean animate) {
@@ -638,7 +796,8 @@ public class HomeActivity extends Activity {
             if (slideshow != null) {
                 content.animate().alpha(0f).setDuration(1500).start();
                 leftShade.animate().alpha(0f).setDuration(1500).start();
-                tint.animate().alpha(0.35f).setDuration(1500).start();
+                wxBlock.animate().alpha(0.85f).setDuration(1500).start();
+                animateShade(idleShade(), 1500);
                 credit.animate().alpha(0.7f).setDuration(1500).start();
             } else {
                 content.animate().alpha(0.5f).setDuration(1500).start();
@@ -651,11 +810,12 @@ public class HomeActivity extends Activity {
         long d = animate ? 150 : 0;
         content.animate().cancel();
         leftShade.animate().cancel();
-        tint.animate().cancel();
+        wxBlock.animate().cancel();
         credit.animate().cancel();
         content.animate().alpha(1f).setDuration(d).start();
         leftShade.animate().alpha(1f).setDuration(d).start();
-        tint.animate().alpha(1f).setDuration(d).start();
+        wxBlock.animate().alpha(1f).setDuration(d).start();
+        animateShade(homeShade(), d);
         credit.animate().alpha(0.5f).setDuration(d).start();
         scheduleIdle();
     }
@@ -664,8 +824,11 @@ public class HomeActivity extends Activity {
     private final Runnable shift = new Runnable() {
         @Override public void run() {
             shiftStep = (shiftStep + 1) % 9;
-            content.setTranslationX(px((shiftStep % 3 - 1) * 4));
-            content.setTranslationY(px((shiftStep / 3 - 1) * 4));
+            float dx = px((shiftStep % 3 - 1) * 4), dy = px((shiftStep / 3 - 1) * 4);
+            content.setTranslationX(dx);
+            content.setTranslationY(dy);
+            wxBlock.setTranslationX(dx);
+            wxBlock.setTranslationY(dy);
             handler.postDelayed(this, SHIFT_MS);
         }
     };
@@ -712,8 +875,10 @@ public class HomeActivity extends Activity {
         for (TextView t : rows) t.setTextColor(c);
         clock.setTextColor(c);
         date.setTextColor(c);
+        wxTemp.setTextColor(c);
+        caption.setTextColor(c);
         credit.setTextColor(c);
-        clock.setAlpha(night ? 0.45f : 0.7f);
+        if (weather != null) renderWeather(weather.cached()); // re-tints the forecast line
         applyBannerNight();
     }
 
