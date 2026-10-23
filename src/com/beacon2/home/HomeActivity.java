@@ -59,6 +59,8 @@ public class HomeActivity extends Activity {
     private TextView[] buttons = new TextView[BUTTONS.length];
     private ImageView[] bannerLayers = new ImageView[2];
     private int bannerFront = 0;
+    /** Row whose banner is on screen; moving between the buttons must not redraw it. */
+    private int shownBannerRow = -1;
     private TextView clock, date, credit;
     /** Top-right block: temperature + time, date, caption, forecast. Stays put in idle. */
     private LinearLayout wxBlock, forecast;
@@ -501,7 +503,7 @@ public class HomeActivity extends Activity {
             buttons[i].setAlpha(on ? 1f : 0.6f);
         }
 
-        showBanner(lastRow, animate);
+        if (lastRow != shownBannerRow) showBanner(lastRow, animate);
     }
 
     /** Row tops in px: unfocused pitch 108, focused 165, plus 56 above the focused row. */
@@ -581,6 +583,7 @@ public class HomeActivity extends Activity {
     }
 
     private void showBanner(int row, boolean animate) {
+        shownBannerRow = row;
         Bitmap b = banners[row];
         ImageView out = bannerLayers[bannerFront], in = bannerLayers[1 - bannerFront];
         if (b != null) {
