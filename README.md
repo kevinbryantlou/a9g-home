@@ -3,7 +3,7 @@
 A home screen app for one TV: Kevin's Sony XBR-55A9G (Android TV 10). Plain Java, no libraries, built without Gradle.
 
 - **Home**: the service names are the menu (YouTube, Prime Video, Netflix, PS4 on HDMI 2, Spotify), over a photo slideshow behind a single neutral shade. Inputs opens Sony's input picker; All apps lists every TV app.
-- **Default home**: Google's launcher (`com.google.android.tvlauncher`) is *disabled*. It is a system app whose HOME filter has priority 2, which always beats an installed app's 0, so disabling it is the only way for this app to be what the Home button opens.
+- **Default home**: Google's launcher (`com.google.android.tvlauncher`) and Android TV Core Services (`com.google.android.tvrecommendations`, which only fed Google's home screen) are *disabled*. It is a system app whose HOME filter has priority 2, which always beats an installed app's 0, so disabling it is the only way for this app to be what the Home button opens.
 - **Ways back to Google's home screen**: All apps → Restore stock home opens Google launcher's app-info page; choose **Enable**, then press Home. Over ADB: `adb shell pm enable com.google.android.tvlauncher`. To uninstall this app, enable Google's launcher *first*, or the TV is left with only the boot placeholder.
 - **If the home screen fails to build** it shows a plain fallback with Settings, "Use Google's home screen" and "Try again", rather than crashing (a crash with Google's launcher disabled would just relaunch it).
 
@@ -25,7 +25,7 @@ Never rename `.HomeActivity`: Android drops the HOME preference when the HOME co
 ## Recovery card
 
 - **Home shows Google's home screen again.** Something re-enabled it (an update or reinstall of "Android TV Home" does this automatically). This app is still in the apps row. To make it Home again: Settings → Device Preferences → Developer options → USB debugging on; then `adb connect 192.168.86.171:5555 && adb shell pm disable-user --user 0 com.google.android.tvlauncher`; then debugging off. Never tap Update or Enable on "Android TV Home" in the Play Store.
-- **You want Google's home back.** All apps → Restore stock home → Continue → Enable → press Home. Or Settings → Apps → See all apps → Android TV Home → Enable.
+- **You want Google's home back.** First Settings → Apps → See all apps → Android TV Core Services → Enable (Google's home stutters badly without it). Then All apps → Restore stock home → Continue → Enable → press Home, or Settings → Apps → See all apps → Android TV Home → Enable.
 - **The home screen shows "hit a problem".** It crashed within the last minute; choose Try again, or Use Google's home screen.
 - **Home is a blank screen.** Only if this app was removed while Google's launcher was off. Say "Hey Google, open Settings", then Apps → See all apps → Android TV Home → Enable.
 - **Notifications.** All apps → BRAVIA notifications.
