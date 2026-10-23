@@ -46,6 +46,7 @@ public class HomeActivity extends Activity {
     private static final long MOVE_MS = 180, BANNER_MS = 160;
     private static final long IDLE_MS = 45_000, SHIFT_MS = 60_000;
     private static final float UNFOCUSED_SCALE = 0.64f;
+    private static final float FORECAST_ALPHA = 0.72f, IDLE_WEATHER_ALPHA = 0.85f;
 
     private final Handler handler = new Handler(Looper.getMainLooper());
     private final DecelerateInterpolator decel = new DecelerateInterpolator(1.5f);
@@ -316,6 +317,10 @@ public class HomeActivity extends Activity {
         content.addView(bar, barp);
 
         root.addView(buildWeatherBlock(), wxParams());
+        FrameLayout.LayoutParams fp = wrap(Gravity.BOTTOM | Gravity.END);
+        fp.rightMargin = px(110);
+        fp.bottomMargin = px(98); // credit is 20 px at 56 px from the bottom
+        root.addView(forecast, fp);
 
         // Optional start photo, e.g. `am start -n com.beacon2.home/.HomeActivity --es photo big_sur.jpg`.
         slideshow = new Slideshow(this, a, b, credit, getIntent().getStringExtra("photo"));
@@ -327,10 +332,11 @@ public class HomeActivity extends Activity {
     }
 
     /**
-     * Option D from the weather design review: right-aligned at x=1810, top y=64.
-     * Row 1: temperature (84 px) then time (128 px), sharing a baseline. Then the date,
-     * a sentence caption ("Mostly clear. High 67°, low 59°.") and a four-day line.
-     * It lives outside the menu layer, so idle only dims it to 85% instead of hiding it.
+     * Option D from the weather design review, as adjusted by Kevin: right-aligned at
+     * x=1810, top y=64. Row 1: temperature (64 px) then time (128 px), sharing a baseline.
+     * Then the date and a sentence caption ("Mostly clear. High 67°, low 59°."). The
+     * four-day line sits bottom right above the photo credit. Both live outside the menu
+     * layer, so idle only dims them to 85% instead of hiding them.
      */
     private View buildWeatherBlock() {
         wxBlock = new LinearLayout(this);
@@ -340,7 +346,7 @@ public class HomeActivity extends Activity {
         LinearLayout top = new LinearLayout(this);
         top.setOrientation(LinearLayout.HORIZONTAL);
         top.setBaselineAligned(true);
-        wxTemp = Ui.text(this, 84, 400, 0xFFFFFFFF);
+        wxTemp = Ui.text(this, 64, 400, 0xFFFFFFFF);
         wxTemp.setLetterSpacing(-0.03f);
         wxTemp.setAlpha(0.8f);
         LinearLayout.LayoutParams tp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -350,7 +356,8 @@ public class HomeActivity extends Activity {
         clock.setLetterSpacing(-0.035f);
         clock.setAlpha(0.95f);
         top.addView(clock);
-        wxBlock.addView(top);
+        // Wrap, not match: as a full-width row its contents would sit at the left edge.
+        wxBlock.addView(top, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
         date = Ui.text(this, 26, 500, 0xFFFFFFFF);
         date.setAlpha(0.6f);
@@ -360,11 +367,11 @@ public class HomeActivity extends Activity {
         caption.setAlpha(0.85f);
         wxBlock.addView(caption, blockRow(10));
 
+        // The four-day line lives bottom right, above the photo credit (see build()).
         forecast = new LinearLayout(this);
         forecast.setOrientation(LinearLayout.HORIZONTAL);
         forecast.setGravity(Gravity.CENTER_VERTICAL);
-        forecast.setAlpha(0.72f);
-        wxBlock.addView(forecast, blockRow(14));
+        forecast.setAlpha(FORECAST_ALPHA);
         return wxBlock;
     }
 
@@ -796,7 +803,8 @@ public class HomeActivity extends Activity {
             if (slideshow != null) {
                 content.animate().alpha(0f).setDuration(1500).start();
                 leftShade.animate().alpha(0f).setDuration(1500).start();
-                wxBlock.animate().alpha(0.85f).setDuration(1500).start();
+                wxBlock.animate().alpha(IDLE_WEATHER_ALPHA).setDuration(1500).start();
+                forecast.animate().alpha(FORECAST_ALPHA * IDLE_WEATHER_ALPHA).setDuration(1500).start();
                 animateShade(idleShade(), 1500);
                 credit.animate().alpha(0.7f).setDuration(1500).start();
             } else {
@@ -811,10 +819,12 @@ public class HomeActivity extends Activity {
         content.animate().cancel();
         leftShade.animate().cancel();
         wxBlock.animate().cancel();
+        forecast.animate().cancel();
         credit.animate().cancel();
         content.animate().alpha(1f).setDuration(d).start();
         leftShade.animate().alpha(1f).setDuration(d).start();
         wxBlock.animate().alpha(1f).setDuration(d).start();
+        forecast.animate().alpha(FORECAST_ALPHA).setDuration(d).start();
         animateShade(homeShade(), d);
         credit.animate().alpha(0.5f).setDuration(d).start();
         scheduleIdle();
@@ -829,6 +839,8 @@ public class HomeActivity extends Activity {
             content.setTranslationY(dy);
             wxBlock.setTranslationX(dx);
             wxBlock.setTranslationY(dy);
+            forecast.setTranslationX(dx);
+            forecast.setTranslationY(dy);
             handler.postDelayed(this, SHIFT_MS);
         }
     };
