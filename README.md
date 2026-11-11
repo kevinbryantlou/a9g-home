@@ -4,8 +4,22 @@ A home screen app for one TV: Kevin's Sony XBR-55A9G (Android TV 10). Plain Java
 
 - **Home**: the service names are the menu (YouTube, Prime Video, Netflix, PS4 on HDMI 2, Spotify), over a photo slideshow behind a single neutral shade. Inputs opens Sony's input picker; All apps lists every TV app.
 - **Default home**: Google's launcher (`com.google.android.tvlauncher`) and Android TV Core Services (`com.google.android.tvrecommendations`, which only fed Google's home screen) are *disabled*. It is a system app whose HOME filter has priority 2, which always beats an installed app's 0, so disabling it is the only way for this app to be what the Home button opens.
-- **Ways back to Google's home screen**: All apps → Restore stock home opens Google launcher's app-info page; choose **Enable**, then press Home. Over ADB: `adb shell pm enable com.google.android.tvlauncher`. To uninstall this app, enable Google's launcher *first*, or the TV is left with only the boot placeholder.
+- **Graceful fallback to Google home screen**: All apps → Restore stock home opens Google launcher's app-info page; choose **Enable**, then press Home. Over ADB: `adb shell pm enable com.google.android.tvlauncher`. To uninstall this app, enable Google's launcher *first*, or the TV is left with only the boot placeholder.
 - **If the home screen fails to build** it shows a plain fallback with Settings, "Use Google's home screen" and "Try again", rather than crashing (a crash with Google's launcher disabled would just relaunch it).
+
+## What it looks like
+
+Screenshots from the TV (1920×1080, scaled down).
+
+![Home screen: YouTube focused, with time, weather and forecast on the right](design/renders/v3-home.webp)
+
+*Home. The focused row is full white and its banner shows on the right; the photo changes every minute and its credit sits bottom right. Weather is Open-Meteo, hidden when more than 2 hours old.*
+
+| PS4 focused | Night mode (20:00–06:30) | All apps |
+|---|---|---|
+| ![PS4 row focused, opens HDMI 2](design/renders/real-ps4.webp) | ![Night mode: darker shade over the photo](design/renders/real-night.webp) | ![All apps: A–Z list of every TV app](design/renders/real-allapps.webp) |
+
+The PS4 and night screenshots predate the weather; the current build shows it on every screen. After 45 s idle the menu fades and only the photo, time and weather stay.
 
 ## Build and install
 
