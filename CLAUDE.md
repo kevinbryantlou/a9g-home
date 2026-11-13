@@ -21,7 +21,7 @@ A home screen app for one TV: Kevin's **Sony XBR-55A9G** (2019 OLED, Android TV 
 
 - `./deploy.sh`: runs `build.sh` (aapt2 → javac → d8 → zipalign → apksigner, no Gradle), installs over ADB, AOT-compiles (`cmd package compile -m speed`), grants coarse location, and prints the HOME role holder.
 - Toolchain: Homebrew `openjdk@17`, `android-commandlinetools` with `platforms;android-29` and `build-tools;34.0.0`.
-- Signing: `~/.a9g-home/release.jks` + `storepass`, backed up in `signing/` (committed deliberately; the repo is private). On a new Mac: `mkdir -p ~/.a9g-home && cp signing/* ~/.a9g-home/`.
+- Signing: `~/.a9g-home/release.jks` + `storepass`, kept **out of the repo** (it is public) and backed up off GitHub. Never commit either file. Rotated 2026-11-12 after the old key was found committed; see `signing/README.md`.
 - Versions: versionCode = git commit count; builds from a dirty tree get `-dirty` in the name. Deploy from a clean commit.
 - **Never rename `.HomeActivity`**: Android drops the HOME preference when the HOME component set changes.
 - Adding a permission in an update can need a TV reboot before it takes effect (INTERNET gave `EPERM` until a reboot).
